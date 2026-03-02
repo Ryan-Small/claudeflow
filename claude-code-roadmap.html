@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Claude Code Learning Roadmap</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=JetBrains+Mono:wght@400;500;600&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    @keyframes fadeSlide {
+      from { opacity: 0; transform: translateY(12px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    button:focus-visible { outline: 2px solid #5CC8FF; outline-offset: 2px; }
+    ::-webkit-scrollbar { width: 4px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #2A2A35; border-radius: 2px; }
+  </style>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-standalone/7.23.9/babel.min.js"></script>
+</head>
+<body>
+  <div id="root"></div>
+  <script type="text/babel">
+    const { useState, useEffect } = React;
+
+    const stages = [
+      {
+        id: 1, title: "Understand", subtitle: "What Claude Code Is",
+        color: "#6FFFE9", darkColor: "#1B4332", icon: "◈", duration: "~1 hour",
+        items: [
+          "Agentic loop: gather → act → verify → repeat",
+          "Five core capabilities: understand, edit, run, git, connect",
+          "Three models: Sonnet (default), Opus (power), Haiku (speed)",
+          "Read official overview & architecture docs",
+        ],
+        keyResource: "code.claude.com/docs/en/overview",
+      },
+      {
+        id: 2, title: "Install", subtitle: "Setup & First Session",
+        color: "#5CC8FF", darkColor: "#0D3B66", icon: "⬡", duration: "~30 min",
+        items: [
+          "Native installer (no Node.js required)",
+          "OAuth or API key authentication",
+          "Run claude → /init → /help",
+          "Understand Pro vs Max vs API billing",
+        ],
+        keyResource: "code.claude.com/docs/en/setup",
+      },
+      {
+        id: 3, title: "Command", subtitle: "Daily Workflows",
+        color: "#FFD166", darkColor: "#5C4813", icon: "⬢", duration: "~1 week",
+        items: [
+          "Slash commands: /compact, /clear, /model, /cost",
+          "Keyboard shortcuts: Shift+Tab, Esc Esc, #, @, !",
+          "CLAUDE.md — your highest-leverage tool",
+          "Permission modes: default, acceptEdits, plan",
+        ],
+        keyResource: "code.claude.com/docs/en/best-practices",
+      },
+      {
+        id: 4, title: "Integrate", subtitle: "MCP & Configuration",
+        color: "#EF476F", darkColor: "#5C1A2A", icon: "◇", duration: "~2 weeks",
+        items: [
+          "MCP: connect GitHub, Sentry, Notion, databases",
+          "Settings hierarchy & environment variables",
+          "Context management: /context, /compact, subagents",
+          "Team config via .claude/settings.json & .mcp.json",
+        ],
+        keyResource: "code.claude.com/docs/en/mcp",
+      },
+      {
+        id: 5, title: "Automate", subtitle: "Advanced Agentic Patterns",
+        color: "#BB86FC", darkColor: "#3C1A6E", icon: "◆", duration: "~1 month",
+        items: [
+          "Explore → Plan → Code → Commit workflow",
+          "Subagents & parallel Agent Teams (Ctrl+B)",
+          "Custom skills in .claude/skills/",
+          "Hooks: PreToolUse, PostToolUse, Stop events",
+        ],
+        keyResource: "code.claude.com/docs/en/sub-agents",
+      },
+      {
+        id: 6, title: "Master", subtitle: "CI/CD & SDK",
+        color: "#FF6B6B", darkColor: "#5C1A1A", icon: "✦", duration: "Ongoing",
+        items: [
+          "GitHub Actions with claude-code-action@v1",
+          "Headless mode: -p flag, JSON output, scripting",
+          "Agent SDK for TypeScript & Python",
+          "Extended thinking & adaptive reasoning",
+        ],
+        keyResource: "code.claude.com/docs/en/github-actions",
+      },
+    ];
+
+    const essentialCommands = [
+      { cmd: "/compact", desc: "Compress context 50–70%", type: "slash" },
+      { cmd: "/clear", desc: "Full context reset", type: "slash" },
+      { cmd: "/model", desc: "Switch AI model", type: "slash" },
+      { cmd: "/init", desc: "Generate CLAUDE.md", type: "slash" },
+      { cmd: "Shift+Tab", desc: "Cycle permission modes", type: "key" },
+      { cmd: "Esc Esc", desc: "Rewind last exchange", type: "key" },
+      { cmd: "#", desc: "Quick memory note", type: "key" },
+      { cmd: "@", desc: "Autocomplete files", type: "key" },
+    ];
+
+    function ClaudeCodeRoadmap() {
+      const [activeStage, setActiveStage] = useState(0);
+      const [hoveredStage, setHoveredStage] = useState(null);
+      const [mounted, setMounted] = useState(false);
+      const [showCommands, setShowCommands] = useState(false);
+
+      useEffect(() => { setMounted(true); }, []);
+
+      const displayStage = hoveredStage !== null ? hoveredStage : activeStage;
+      const current = stages[displayStage];
+
+      return (
+        <div style={{
+          minHeight: "100vh", background: "#0A0A0F", color: "#E8E6E3",
+          fontFamily: "'JetBrains Mono', 'Fira Code', 'SF Mono', monospace",
+          overflow: "hidden", position: "relative",
+        }}>
+          {/* Ambient glow */}
+          <div style={{
+            position: "fixed", top: "-30%", right: "-20%", width: "70%", height: "70%",
+            background: `radial-gradient(ellipse, ${current.color}08 0%, transparent 70%)`,
+            transition: "background 0.8s ease", pointerEvents: "none",
+          }} />
+          <div style={{
+            position: "fixed", bottom: "-20%", left: "-10%", width: "50%", height: "50%",
+            background: `radial-gradient(ellipse, ${current.color}05 0%, transparent 70%)`,
+            transition: "background 0.8s ease", pointerEvents: "none",
+          }} />
+
+          {/* Header */}
+          <header style={{
+            padding: "40px 48px 0", position: "relative", zIndex: 2,
+            opacity: mounted ? 1 : 0,
+            transform: mounted ? "translateY(0)" : "translateY(-20px)",
+            transition: "all 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
+          }}>
+            <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "6px" }}>
+              <div style={{
+                width: "10px", height: "10px", borderRadius: "50%",
+                background: current.color, boxShadow: `0 0 12px ${current.color}80`,
+                transition: "all 0.5s ease",
+              }} />
+              <span style={{ fontSize: "11px", letterSpacing: "4px", textTransform: "uppercase", color: "#666" }}>
+                Learning Roadmap
+              </span>
+            </div>
+            <h1 style={{
+              fontSize: "clamp(32px, 5vw, 56px)", fontWeight: 700, margin: 0,
+              lineHeight: 1.05, letterSpacing: "-2px",
+              fontFamily: "'Space Grotesk', 'DM Sans', system-ui, sans-serif",
+            }}>
+              Claude{" "}
+              <span style={{ color: current.color, transition: "color 0.5s ease" }}>Code</span>
+            </h1>
+            <p style={{
+              fontSize: "14px", color: "#555", margin: "8px 0 0",
+              maxWidth: "480px", lineHeight: 1.5,
+              fontFamily: "'DM Sans', system-ui, sans-serif",
+            }}>
+              From first install to advanced agentic automation — a six-stage path to mastery.
+            </p>
+          </header>
+
+          {/* Main content */}
+          <div style={{
+            display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0",
+            padding: "36px 48px 48px", position: "relative", zIndex: 2,
+            minHeight: "calc(100vh - 180px)",
+          }}>
+            {/* Left: Stage navigation */}
+            <div style={{ display: "flex", flexDirection: "column", gap: "4px", paddingRight: "48px" }}>
+              {stages.map((stage, i) => {
+                const isActive = displayStage === i;
+                return (
+                  <button
+                    key={stage.id}
+                    onClick={() => setActiveStage(i)}
+                    onMouseEnter={() => setHoveredStage(i)}
+                    onMouseLeave={() => setHoveredStage(null)}
+                    style={{
+                      display: "flex", alignItems: "center", gap: "16px",
+                      padding: "16px 20px",
+                      background: isActive ? `${stage.color}0A` : "transparent",
+                      border: "1px solid",
+                      borderColor: isActive ? `${stage.color}30` : "transparent",
+                      borderRadius: "12px", cursor: "pointer", textAlign: "left",
+                      transition: "all 0.3s ease",
+                      opacity: mounted ? 1 : 0,
+                      transform: mounted ? "translateX(0)" : "translateX(-30px)",
+                      transitionDelay: `${i * 80}ms`,
+                      position: "relative", overflow: "hidden",
+                    }}
+                  >
+                    {isActive && (
+                      <div style={{
+                        position: "absolute", left: 0, top: 0, bottom: 0,
+                        width: "3px", background: stage.color, borderRadius: "0 2px 2px 0",
+                      }} />
+                    )}
+                    <div style={{
+                      width: "40px", height: "40px", display: "flex",
+                      alignItems: "center", justifyContent: "center", fontSize: "18px",
+                      color: isActive ? stage.color : "#444",
+                      background: isActive ? `${stage.color}15` : "#141419",
+                      borderRadius: "10px", transition: "all 0.3s ease", flexShrink: 0,
+                      border: `1px solid ${isActive ? stage.color + "30" : "#1E1E26"}`,
+                    }}>
+                      {stage.icon}
+                    </div>
+                    <div style={{ flex: 1, minWidth: 0 }}>
+                      <div style={{ display: "flex", alignItems: "baseline", gap: "10px" }}>
+                        <span style={{
+                          fontSize: "10px", color: isActive ? stage.color : "#444",
+                          fontWeight: 600, letterSpacing: "2px", transition: "color 0.3s ease",
+                        }}>
+                          STAGE {stage.id}
+                        </span>
+                        <span style={{
+                          fontSize: "10px", color: "#333",
+                          fontFamily: "'DM Sans', system-ui, sans-serif",
+                        }}>
+                          {stage.duration}
+                        </span>
+                      </div>
+                      <div style={{
+                        fontSize: "16px", fontWeight: 600,
+                        color: isActive ? "#E8E6E3" : "#666",
+                        transition: "color 0.3s ease",
+                        fontFamily: "'DM Sans', system-ui, sans-serif",
+                      }}>
+                        {stage.title}
+                      </div>
+                      <div style={{
+                        fontSize: "12px", color: isActive ? "#888" : "#444",
+                        transition: "color 0.3s ease",
+                        fontFamily: "'DM Sans', system-ui, sans-serif",
+                      }}>
+                        {stage.subtitle}
+                      </div>
+                    </div>
+                  </button>
+                );
+              })}
+
+              <button
+                onClick={() => setShowCommands(!showCommands)}
+                style={{
+                  marginTop: "12px", padding: "12px 20px",
+                  background: showCommands ? "#141419" : "transparent",
+                  border: "1px solid",
+                  borderColor: showCommands ? "#2A2A35" : "#1A1A22",
+                  borderRadius: "10px", cursor: "pointer",
+                  display: "flex", alignItems: "center", gap: "10px",
+                  color: showCommands ? "#E8E6E3" : "#555",
+                  fontSize: "12px", fontFamily: "'DM Sans', system-ui, sans-serif",
+                  transition: "all 0.3s ease",
+                  opacity: mounted ? 1 : 0, transitionDelay: "500ms",
+                }}
+              >
+                <span style={{ fontSize: "14px" }}>⌘</span>
+                <span style={{ fontWeight: 500 }}>
+                  {showCommands ? "Hide" : "Show"} Essential Commands
+                </span>
+              </button>
+            </div>
+
+            {/* Right: Detail panel */}
+            <div style={{
+              paddingLeft: "48px", borderLeft: "1px solid #1A1A22",
+              display: "flex", flexDirection: "column", justifyContent: "center",
+            }}>
+              {!showCommands ? (
+                <div key={displayStage} style={{ animation: "fadeSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1)" }}>
+                  <div style={{
+                    display: "inline-flex", alignItems: "center", gap: "8px",
+                    padding: "6px 14px", background: `${current.color}10`,
+                    borderRadius: "20px", marginBottom: "20px",
+                    border: `1px solid ${current.color}20`,
+                  }}>
+                    <span style={{ fontSize: "14px" }}>{current.icon}</span>
+                    <span style={{
+                      fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase",
+                      color: current.color, fontWeight: 600,
+                    }}>
+                      Stage {current.id} · {current.duration}
+                    </span>
+                  </div>
+
+                  <h2 style={{
+                    fontSize: "clamp(28px, 3.5vw, 40px)", fontWeight: 700,
+                    margin: "0 0 4px", color: "#E8E6E3", letterSpacing: "-1px",
+                    fontFamily: "'DM Sans', system-ui, sans-serif",
+                  }}>
+                    {current.title}
+                  </h2>
+                  <p style={{
+                    fontSize: "15px", color: "#666", margin: "0 0 32px",
+                    fontFamily: "'DM Sans', system-ui, sans-serif",
+                  }}>
+                    {current.subtitle}
+                  </p>
+
+                  <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
+                    {current.items.map((item, i) => (
+                      <div key={i} style={{
+                        display: "flex", alignItems: "flex-start", gap: "14px",
+                        padding: "14px 16px", background: "#0E0E14",
+                        borderRadius: "10px", border: "1px solid #1A1A22",
+                        animation: "fadeSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+                        animationDelay: `${i * 60}ms`, animationFillMode: "both",
+                      }}>
+                        <div style={{
+                          width: "6px", height: "6px", borderRadius: "50%",
+                          background: current.color, marginTop: "7px",
+                          flexShrink: 0, opacity: 0.7,
+                        }} />
+                        <span style={{
+                          fontSize: "13.5px", lineHeight: 1.5, color: "#C0BDB8",
+                          fontFamily: "'DM Sans', system-ui, sans-serif",
+                        }}>
+                          {item}
+                        </span>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div style={{
+                    marginTop: "28px", padding: "14px 18px",
+                    background: `${current.darkColor}40`, borderRadius: "10px",
+                    border: `1px solid ${current.color}15`,
+                    display: "flex", alignItems: "center", gap: "10px",
+                  }}>
+                    <span style={{ fontSize: "13px", opacity: 0.5 }}>→</span>
+                    <a
+                      href={`https://${current.keyResource}`}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        fontSize: "12px", color: current.color, opacity: 0.8,
+                        fontFamily: "'JetBrains Mono', monospace",
+                        letterSpacing: "0.3px", textDecoration: "none",
+                      }}
+                    >
+                      {current.keyResource}
+                    </a>
+                  </div>
+                </div>
+              ) : (
+                <div style={{ animation: "fadeSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1)" }}>
+                  <h3 style={{
+                    fontSize: "20px", fontWeight: 600, margin: "0 0 24px",
+                    fontFamily: "'DM Sans', system-ui, sans-serif",
+                    color: "#E8E6E3", letterSpacing: "-0.5px",
+                  }}>
+                    Essential Commands
+                  </h3>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
+                    {essentialCommands.map((cmd, i) => (
+                      <div key={i} style={{
+                        padding: "14px 16px", background: "#0E0E14",
+                        borderRadius: "10px", border: "1px solid #1A1A22",
+                        animation: "fadeSlide 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+                        animationDelay: `${i * 40}ms`, animationFillMode: "both",
+                      }}>
+                        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "6px" }}>
+                          <code style={{
+                            fontSize: "13px", fontWeight: 600,
+                            color: cmd.type === "slash" ? "#5CC8FF" : "#FFD166",
+                            fontFamily: "'JetBrains Mono', monospace",
+                          }}>
+                            {cmd.cmd}
+                          </code>
+                        </div>
+                        <div style={{
+                          fontSize: "12px", color: "#666",
+                          fontFamily: "'DM Sans', system-ui, sans-serif",
+                        }}>
+                          {cmd.desc}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                  <div style={{
+                    marginTop: "20px", display: "flex", gap: "20px",
+                    fontSize: "11px", color: "#444",
+                    fontFamily: "'DM Sans', system-ui, sans-serif",
+                  }}>
+                    <span><span style={{ color: "#5CC8FF", marginRight: "6px" }}>●</span> Slash commands</span>
+                    <span><span style={{ color: "#FFD166", marginRight: "6px" }}>●</span> Keyboard shortcuts</span>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
+
+          {/* Bottom bar */}
+          <div style={{
+            position: "fixed", bottom: 0, left: 0, right: 0,
+            height: "3px", background: "#0E0E14", zIndex: 10,
+          }}>
+            <div style={{
+              height: "100%",
+              width: `${((displayStage + 1) / stages.length) * 100}%`,
+              background: `linear-gradient(90deg, ${current.color}80, ${current.color})`,
+              transition: "all 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
+              borderRadius: "0 2px 2px 0",
+            }} />
+          </div>
+        </div>
+      );
+    }
+
+    ReactDOM.createRoot(document.getElementById("root")).render(<ClaudeCodeRoadmap />);
+  </script>
+</body>
+</html>
