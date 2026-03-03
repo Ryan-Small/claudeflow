@@ -23,12 +23,18 @@
       50% { opacity: 0; }
     }
     button:focus-visible { outline: 2px solid #5CC8FF; outline-offset: 2px; }
-    .overview-card b { color: #C0BDB8; }
+    .overview-card b { color: #D0CDC8; }
     .overview-card a { text-decoration: none; }
     .overview-card a:hover { opacity: 1 !important; text-decoration: underline; }
+    .overview-card code {
+      display: inline-block; padding: 4px 10px; margin: 3px 0;
+      background: #2A2A2A; border-radius: 4px; border: 1px solid #3A3A3A;
+      font-family: 'JetBrains Mono', monospace; font-size: 12px;
+      line-height: 1.5; white-space: pre-wrap;
+    }
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: transparent; }
-    ::-webkit-scrollbar-thumb { background: #2A2A35; border-radius: 2px; }
+    ::-webkit-scrollbar-thumb { background: #3A3A3A; border-radius: 2px; }
   </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react/18.2.0/umd/react.production.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/react-dom/18.2.0/umd/react-dom.production.min.js"></script>
@@ -41,38 +47,89 @@
 
     const stages = [
       {
-        id: 1, title: "Getting Started", subtitle: "What Claude Code Is",
-        color: "#6FFFE9", darkColor: "#1B4332", icon: "◈", duration: "~1 hour",
+        id: 1, title: "Discovery", subtitle: "",
+        color: "#6FFFE9", darkColor: "#1B4332", icon: "◈", duration: "~1.5 hours",
         overview: [
           {
+            title: "Large Language Models",
+            content: 'You\'ve probably heard the term "AI" used to describe everything from chess programs to self-driving cars. The type of AI behind Claude is called a <b><a href="https://ig.ft.com/generative-ai/" target="_blank" rel="noopener noreferrer" style="color: #6FFFE9; opacity: 0.8;">Large Language Model</a></b>, or LLM.<br/><br/>Think of an LLM as someone who has <b>read every book in every library</b>, every Wikipedia article, millions of conversations, and mountains of code. It didn\'t memorize all of it word-for-word — instead, it learned <b>patterns</b>. How sentences are structured. How ideas connect. How code works. How to reason through a problem step by step.<br/><br/>When you ask an LLM a question, it isn\'t searching a database for the answer. It\'s <b>generating</b> a response — writing it word by word, choosing each word based on everything it\'s learned about language and reasoning. This is why it can write an essay it\'s never seen before, explain a concept in a new way, or write code for a problem nobody has solved exactly that way.<br/><br/>This ability to <b>reason and generate</b> — rather than just look things up — is what makes everything else in this course possible.<br/><br/>One important caveat: because an LLM <b>generates</b> text rather than looking up facts, it can sound confident even when it\'s wrong. Generating ≠ knowing. It may produce plausible-sounding answers that are inaccurate, or cite sources that don\'t exist. This isn\'t a bug — it\'s how the technology works. Building the habit of <b>verifying important output</b> is a skill you\'ll develop throughout this course.<br/><br/>But an LLM on its own just talks. What if it could <b>take action</b>?',
+          },
+          {
             title: "Agentic AI",
-            content: 'Imagine you ask a regular AI to help you bake a cake. It gives you a recipe and stops — you still have to gather ingredients, mix them, preheat the oven, and do everything yourself. Now imagine an AI that actually walks into the kitchen: it checks what ingredients you have, goes to the store for what\'s missing, mixes the batter, sets the oven temperature, puts the cake in, and checks on it until it\'s done.<br/><br/>That\'s the difference between traditional AI and agentic AI. Traditional AI answers questions. <b>Agentic AI takes action.</b> It breaks a big task into smaller steps, does each step on its own, checks whether it worked, and adjusts if something goes wrong — all without you telling it every move.<br/><br/>When people say "agentic," they mean the AI has agency: the ability to decide what to do next and actually do it.<br/><br/>This decision-making process follows what\'s called the <b>agentic loop</b>:<br/><br/><b>Gather</b> — the agent looks around and collects information. What files exist? What does the code say? What error just happened?<br/><b>Act</b> — based on what it learned, the agent takes an action. Edit a file, run a command, create a new function.<br/><b>Verify</b> — the agent checks whether the action worked. Did the tests pass? Did the error go away? Does the output look right?<br/><b>Repeat</b> — if the task isn\'t done, it goes back to the beginning. Gather new information, take the next action, verify again.<br/><br/>This loop runs continuously until the job is complete. It\'s the same pattern you follow when solving a problem yourself — look at the situation, try something, check the result, adjust. The difference is that an agentic AI does this <b>autonomously</b>, deciding at each step what to do next without waiting for you to tell it.',
+            content: 'An LLM can reason, but on its own it\'s stuck behind a screen — it can only <b>talk</b>. Agentic AI is what happens when you give an LLM <b>tools</b>. Tools to read files, run commands, browse the web, call APIs. Instead of telling you what to do, it <b>does it</b> — breaking work into steps, executing each one, and checking its own results. When something goes wrong, it adjusts and tries again. All without you directing every move.<br/><br/>The key shift: you describe the <b>goal</b>, and the AI figures out the <b>how</b>.<br/><br/>This is what people mean by "agentic" — the AI has <b>agency</b>. It decides what to do next and actually does it. That\'s the concept. Let\'s meet the specific AI you\'ll be working with.',
           },
           {
             title: "Claude",
-            content: '<a href="https://www.anthropic.com/claude" target="_blank" rel="noopener noreferrer" style="color: #6FFFE9; opacity: 0.8;">Claude</a> is an AI assistant made by <a href="https://www.anthropic.com" target="_blank" rel="noopener noreferrer" style="color: #6FFFE9; opacity: 0.8;">Anthropic</a>. You talk to it in plain English (or any language), and it talks back. You can ask it to explain a concept, write an essay, analyze data, generate code, or brainstorm ideas. It\'s like having a <b>very knowledgeable colleague</b> available 24/7 who never gets tired or impatient.<br/><br/>You can access Claude in three ways:<br/><b>Web</b> — through <a href="https://claude.ai" target="_blank" rel="noopener noreferrer" style="color: #6FFFE9; opacity: 0.8;">claude.ai</a> (just open a browser and start chatting)<br/><b>Desktop</b> — through an <a href="https://claude.ai/download" target="_blank" rel="noopener noreferrer" style="color: #6FFFE9; opacity: 0.8;">app on your computer</a><br/><b>API</b> — which lets developers <a href="https://docs.anthropic.com/en/api/getting-started" target="_blank" rel="noopener noreferrer" style="color: #6FFFE9; opacity: 0.8;">build Claude into their own software</a><br/><br/>No matter how you access it, you\'re talking to the same Claude — it\'s the <b>brain</b> behind all of these interfaces.',
+            content: '<a href="https://www.anthropic.com/claude" target="_blank" rel="noopener noreferrer" style="color: #6FFFE9; opacity: 0.8;">Claude</a> is <a href="https://www.anthropic.com" target="_blank" rel="noopener noreferrer" style="color: #6FFFE9; opacity: 0.8;">Anthropic\'s</a> LLM — and the brain behind everything in this course. You talk to it in plain English (or any language), and it talks back. Ask it to explain a concept, write an essay, analyze data, generate code, or brainstorm ideas. It\'s like having a <b>very knowledgeable colleague</b> available 24/7.<br/><br/>You can access Claude in three ways:<br/><b>Web</b> — through <a href="https://claude.ai" target="_blank" rel="noopener noreferrer" style="color: #6FFFE9; opacity: 0.8;">claude.ai</a> (just open a browser and start chatting)<br/><b>Desktop</b> — through an <a href="https://claude.ai/download" target="_blank" rel="noopener noreferrer" style="color: #6FFFE9; opacity: 0.8;">app on your computer</a><br/><b>API</b> — which lets developers <a href="https://docs.anthropic.com/en/api/getting-started" target="_blank" rel="noopener noreferrer" style="color: #6FFFE9; opacity: 0.8;">build Claude into their own software</a><br/><br/>Claude comes in <b>three tiers</b>. <b>Opus</b> is the smartest — best for complex reasoning, but slower. <b>Sonnet</b> is the <b>default</b> everyday workhorse. <b>Haiku</b> is the fastest and cheapest — great for quick tasks. You can <a href="https://docs.anthropic.com/en/docs/about-claude/models" target="_blank" rel="noopener noreferrer" style="color: #6FFFE9; opacity: 0.8;">switch between them</a> anytime.<br/><br/>No matter which tier or interface, you\'re talking to the same Claude — a powerful <b>brain</b>. But a brain alone can only give advice. It can\'t touch your code. That changes with <b>Claude Code</b>.',
           },
           {
             title: "Claude Code",
-            content: 'Think of Claude as a <b>brilliant advisor sitting in a room with no doors</b>. You walk in, describe your problem, and Claude gives you a thoughtful answer — but it can\'t leave the room. It can\'t look at your files, run your code, or make changes to your project. You have to do all of that yourself and come back to report what happened.<br/><br/><a href="https://docs.anthropic.com/en/docs/claude-code/overview" target="_blank" rel="noopener noreferrer" style="color: #6FFFE9; opacity: 0.8;">Claude Code</a> <b>opens the doors</b>. It\'s a tool you run in your terminal (the command-line interface developers use) that connects Claude directly to your project. Now Claude can:<br/><br/><b>Read</b> your files to understand your code<br/><b>Edit</b> files to make changes<br/><b>Run</b> commands to test things<br/><b>Manage git</b> to track your work<br/><b>Connect</b> to services like GitHub<br/><br/>Claude is the brain. Claude Code gives it <b>hands, eyes, and feet</b>. Together, they turn Claude from someone who gives advice into someone who <b>does the work alongside you</b>.<br/><br/>That brain comes in <b>three tiers</b>. <b>Opus</b> is the smartest and most thorough — best for complex architecture and tricky debugging, but slower and pricier. <b>Sonnet</b> is the everyday workhorse and the <b>default model</b> — fast and capable enough for most tasks. <b>Haiku</b> is the quickest and cheapest — great for simple lookups, boilerplate, and formatting. You can <b>switch between them anytime</b>. Learn more about <a href="https://docs.anthropic.com/en/docs/about-claude/models" target="_blank" rel="noopener noreferrer" style="color: #6FFFE9; opacity: 0.8;">Claude\'s model tiers</a>.',
+            visual: "agenticLoop",
+            content: 'Think of Claude as a <b>brilliant advisor sitting in a room with no doors</b>. You walk in, describe your problem, and get a thoughtful answer — but Claude can\'t leave the room. It can\'t look at your files, run your code, or make changes. You have to do all of that yourself and come back to report what happened.<br/><br/><a href="https://docs.anthropic.com/en/docs/claude-code/overview" target="_blank" rel="noopener noreferrer" style="color: #6FFFE9; opacity: 0.8;">Claude Code</a> <b>opens the doors</b>. It\'s a tool you run in your terminal that connects Claude directly to your project — giving the brain its tools. Now Claude can <b>read</b> and <b>edit</b> your files, <b>run</b> commands, <b>manage git</b>, and <b>connect</b> to services like GitHub.<br/><br/>With these tools, Claude Code runs the <b>agentic loop</b> — the pattern from card two, made concrete:',
+            contentAfterVisual: 'You describe the goal. Claude Code figures out the how — <b>gathering</b> context from your files, <b>acting</b> by editing code and running commands, <b>verifying</b> the results, and <b>repeating</b> until the job is done. That\'s the LLM (the brain) + the tools (the hands) + the loop (the process) — all working together inside your codebase.<br/><br/>But the quality of what Claude does depends entirely on how you talk to it.',
+          },
+          {
+            title: "Prompts",
+            content: 'Every time you type something to Claude, you\'re writing a <b>prompt</b>. A prompt is just your input — the question, instruction, or request that tells Claude what you want. The better your prompt, the better Claude\'s response.<br/><br/>A good prompt is <b>specific</b>, gives <b>context</b>, and states what you <b>want back</b>. Compare these two:<br/><br/><span style="display: inline-block; padding: 6px 12px; background: #251820; border: 1px solid #3A2530; border-radius: 6px; margin: 4px 0; font-size: 13px;"><span style="color: #EF476F; opacity: 0.7; font-size: 10px; letter-spacing: 1px; text-transform: uppercase;">Vague</span><br/><span style="color: #888;">"Help me plan a trip"</span></span><br/><span style="display: inline-block; padding: 6px 12px; background: #152520; border: 1px solid #254035; border-radius: 6px; margin: 4px 0; font-size: 13px;"><span style="color: #6FFFE9; opacity: 0.7; font-size: 10px; letter-spacing: 1px; text-transform: uppercase;">Better</span><br/><span style="color: #D0CDC8;">"I\'m planning a 5-day trip to Tokyo in April with my partner. We like food, architecture, and avoiding tourist crowds. Budget is $200/day excluding flights. Build a day-by-day itinerary."</span></span><br/><br/>The second prompt works because Claude knows the <b>destination</b>, the <b>preferences</b>, and the <b>expected output</b>. You\'re not making it guess.<br/><br/>A few principles that go a long way:<br/><b>Be direct</b> — say exactly what you want, don\'t hint<br/><b>Give examples</b> — show Claude what good output looks like<br/><b>Set constraints</b> — "in under 200 words" or "no more than 5 bullet points"<br/><b>Iterate</b> — if the first response isn\'t right, tell Claude what to change<br/><br/>Prompting is a skill that improves with practice. For a deeper dive, explore the <a href="https://www.promptingguide.ai/" target="_blank" rel="noopener noreferrer" style="color: #6FFFE9; opacity: 0.8;">Prompt Engineering Guide</a> — it covers techniques from basic to advanced. But none of this matters if Claude doesn\'t have the right <b>context</b>.',
+          },
+          {
+            title: "Context",
+            content: 'Context is the information Claude has available when generating a response. Think of it like briefing a consultant before a meeting — the more relevant background you provide, the better their advice will be.<br/><br/>In a conversation, context includes:<br/><b>Your prompt</b> — what you just asked<br/><b>The conversation history</b> — everything said so far in this chat<br/><b>System instructions</b> — background rules set by the interface (like Projects)<br/><b>Attached files</b> — documents or code you\'ve uploaded<br/><br/>There\'s a limit to how much context Claude can hold at once — this is called the <b>context window</b>. Think of it like a desk: Claude can only work with what fits on the desk at one time. In a long conversation, earlier messages may fall off the edge.<br/><br/><b>Practical tip:</b> start a new conversation when you change topics. A long, wandering chat fills the desk with irrelevant context. A fresh conversation gives Claude a clean desk to work from.<br/><br/>This is why <b>Projects</b> in claude.ai matter. Without a Project, you\'d have to re-explain your preferences, upload the same files, and repeat the same instructions every time you start a new chat. When you create a Project and add instructions or files, that information stays available across every conversation in the project — it\'s always on the desk.<br/><br/>In Claude Code (which you\'ll use later), context management becomes even more important. Claude Code reads your files, runs commands, and builds context <b>automatically</b> — but understanding how context works now will help you write better prompts and know when to start a fresh conversation.',
           },
         ],
         items: [],
         keyResource: "code.claude.com/docs/en/overview",
         guide: {
-          description: "Before opening a terminal, build a mental model of how Claude Code works. Understanding the agentic loop — how Claude gathers context, takes actions, verifies results, and iterates — will shape how you write prompts and what you expect from the tool.",
+          description: "",
           steps: [
-            "Read the official Claude Code overview and architecture documentation",
-            "Understand the agentic loop: gather context → decide action → execute → verify → repeat",
-            "Map the five core capabilities: understand code, edit files, run commands, manage git, connect to external tools",
-            "Compare model tiers: Opus (complex reasoning, architecture), Sonnet (daily development), Haiku (quick tasks, boilerplate)",
-            "Watch or read 2–3 real-world usage examples to see the loop in action",
+            {
+              title: 'Go to <a href="https://claude.ai" target="_blank" rel="noopener noreferrer" style="color: #6FFFE9; opacity: 0.8;">claude.ai</a> and create a free account (or sign in if you have one)',
+              detail: 'Visit claude.ai and sign up with your email or Google account. The free tier gives you access to Claude with usage limits — more than enough for this level.<br/><br/><b>What you\'ll see:</b><br/>• A <b>chat input</b> at the bottom — this is where you type your prompts<br/>• A <b>model selector</b> to choose between Sonnet, Opus, and Haiku<br/>• A <b>sidebar</b> on the left with your conversation history and Projects<br/>That\'s it — no setup, no installation, no configuration. Just start typing.',
+            },
+            {
+              title: "Start a conversation — ask Claude to explain something you're curious about",
+              detail: 'Pick a topic you know well and one you don\'t. This lets you evaluate Claude\'s accuracy on familiar ground and its usefulness on new ground.<br/><br/><b>Try these prompts:</b><br/><code style="color: #6FFFE9; opacity: 0.7; font-size: 12px;">Explain how a car engine works in simple terms.</code><br/><code style="color: #6FFFE9; opacity: 0.7; font-size: 12px;">What are the main causes of inflation and how does it affect everyday life?</code><br/><br/>Notice how Claude asks clarifying questions or offers to go deeper. Try responding with "go deeper on the second point" or "explain that like I\'m 10 years old" to see how it adapts.<br/><br/>Remember: Claude is <b>generating</b> these responses, not looking them up. That\'s why checking its accuracy on topics you already know is so valuable.',
+            },
+            {
+              title: 'Try <a href="https://www.promptingguide.ai/techniques" target="_blank" rel="noopener noreferrer" style="color: #6FFFE9; opacity: 0.8;">different prompt styles</a> and compare the responses',
+              detail: 'Ask the same question three different ways and compare the results:<br/><br/><b>One-liner:</b><br/><code style="color: #6FFFE9; opacity: 0.7; font-size: 12px;">How do I write a good cover letter?</code><br/><br/><b>Detailed paragraph:</b><br/><code style="color: #6FFFE9; opacity: 0.7; font-size: 12px;">I\'m applying for a marketing position at a tech company. I have 3 years of experience in social media management and content creation. The job posting emphasizes data-driven marketing and cross-functional collaboration. Write a cover letter that highlights these strengths and keeps a professional but personable tone.</code><br/><br/><b>Bulleted request:</b><br/><code style="color: #6FFFE9; opacity: 0.7; font-size: 12px;">Write a cover letter. Details:<br/>- Role: Marketing Specialist at a tech company<br/>- My experience: 3 years social media + content creation<br/>- Emphasize: data-driven approach, cross-team collaboration<br/>- Tone: professional but personable<br/>- Length: under 300 words</code><br/><br/>Notice how more context and structure produces more useful responses. This is <b>prompting</b> in action — the same question, asked differently, gets very different results.',
+            },
+            {
+              title: "Ask Claude to generate something: a story, recipe, code snippet, or email draft",
+              detail: 'This is where you experience Claude as a creative partner, not just a Q&A bot.<br/><br/><b>Try these:</b><br/><code style="color: #6FFFE9; opacity: 0.7; font-size: 12px;">Write a professional email declining a meeting invitation. Tone: polite but firm. Keep it under 100 words.</code><br/><br/><code style="color: #6FFFE9; opacity: 0.7; font-size: 12px;">Create a weekly meal plan for two people. Budget-friendly, mostly vegetarian, and each meal should take under 30 minutes. Include a grocery list.</code><br/><br/>After the first response, <b>iterate</b>: "Make it more casual" or "Swap Tuesday\'s dinner for something Thai" or "Now make it half the length." This is the core skill — using follow-ups to refine output.',
+            },
+            {
+              title: 'Switch between <a href="https://platform.claude.com/docs/en/about-claude/models/overview" target="_blank" rel="noopener noreferrer" style="color: #6FFFE9; opacity: 0.8;">models</a> (Sonnet, Opus, Haiku) and observe the differences',
+              detail: 'Use the model selector near the chat input to switch models. Try the same prompt on each:<br/><br/><code style="color: #6FFFE9; opacity: 0.7; font-size: 12px;">Explain the pros and cons of remote work vs. in-office work. Include the perspective of both employees and employers.</code><br/><br/><b>What to notice:</b><br/>• <b>Haiku</b> responds almost instantly — shorter, more direct<br/>• <b>Sonnet</b> balances speed and depth — the sweet spot for most tasks<br/>• <b>Opus</b> takes longer but explores nuances and edge cases<br/><br/>There\'s no "best" model — the right choice depends on the task. Quick question? Haiku. Everyday work? Sonnet. Complex analysis? Opus.',
+            },
+            {
+              title: "Use the Research feature to have Claude search the web and cite sources",
+              detail: 'Toggle on the Research feature (look for the search icon or toggle in the input area). This lets Claude search the web and cite real sources.<br/><br/><b>Try this:</b><br/><code style="color: #6FFFE9; opacity: 0.7; font-size: 12px;">Research the current state of electric vehicle adoption worldwide. What are the leading markets, major manufacturers, and biggest barriers to adoption?</code><br/><br/>Check the citations Claude provides — click through to verify they\'re real and accurate. This builds the habit of <b>verifying output</b>, which is critical when working with any AI.',
+            },
+            {
+              title: "Create a Project — give it instructions and upload a file, then ask questions about it",
+              detail: 'Click "Projects" in the sidebar to create a new one. Projects let you set persistent instructions and upload reference files that Claude remembers across conversations.<br/><br/><b>Try this setup:</b><br/>1. Create a project called "Learning Assistant"<br/>2. In the project instructions, write:<br/><code style="color: #6FFFE9; opacity: 0.7; font-size: 12px;">You are helping me learn new technical concepts. Always explain things simply first, then add complexity. Use analogies when possible. If I ask something you\'re not sure about, say so.</code><br/>3. Upload a document you\'re studying (a PDF, article, or notes)<br/>4. Start a conversation and ask questions about the uploaded content<br/><br/>Notice how Claude follows your instructions without you repeating them. This is <b>context</b> in action — persistent instructions keep information "on the desk" across conversations. It\'s a preview of how CLAUDE.md works in Claude Code.',
+            },
           ],
           pitfalls: [
-            "Skipping the docs and learning by trial-and-error wastes tokens and builds bad habits",
-            "Assuming Claude Code is just autocomplete — it's an autonomous agent with a fundamentally different interaction model",
+            {
+              title: "Writing vague prompts — be specific about what you want and provide context",
+              detail: '<b>Instead of:</b><br/><code style="color: #EF476F; opacity: 0.7; font-size: 12px;">Help me with my resume</code><br/><br/><b>Try:</b><br/><code style="color: #6FFFE9; opacity: 0.7; font-size: 12px;">Review my resume for a marketing manager role. Focus on making the bullet points more impactful with specific metrics. Here\'s the current version:</code><br/><br/>The more Claude knows about your situation, the more useful its response.',
+            },
+            {
+              title: "Accepting the first response without iterating — tell Claude what to change",
+              detail: 'Claude\'s first response is a starting point, not the final answer. Treat it like a first draft:<br/><br/><code style="color: #6FFFE9; opacity: 0.7; font-size: 12px;">That\'s good but too formal. Make it more conversational and cut it in half.</code><br/><code style="color: #6FFFE9; opacity: 0.7; font-size: 12px;">The second paragraph is weak. Replace it with a concrete example.</code><br/><br/>Each follow-up gets you closer to what you actually need. Two or three rounds of refinement almost always beats starting over.',
+            },
+            {
+              title: "Trusting everything blindly — Claude sounds confident even when it's wrong",
+              detail: 'Claude generates text based on patterns, not verified facts. It can:<br/>• Cite sources that don\'t exist<br/>• State incorrect statistics with complete confidence<br/>• Give outdated information<br/><br/>Build the habit: if you\'d fact-check a human colleague on it, fact-check Claude too. Use the <b>Research</b> feature to get cited sources, then click through to verify them.',
+            },
+            {
+              title: "Treating it like a search engine — talk to Claude like a colleague, not a search bar",
+              detail: '<b>Search engine style:</b><br/><code style="color: #EF476F; opacity: 0.7; font-size: 12px;">best way to learn Spanish</code><br/><br/><b>Conversation style:</b><br/><code style="color: #6FFFE9; opacity: 0.7; font-size: 12px;">I want to learn conversational Spanish for a trip to Mexico in 3 months. I\'m a complete beginner with about 30 minutes a day to practice. What\'s a realistic study plan?</code><br/><br/>Claude excels when you give it the full picture. Keywords get you a generic list; context gets you a tailored answer.',
+            },
           ],
-          checkpoint: "You can explain the agentic loop to a colleague and confidently choose between Opus, Sonnet, and Haiku based on task complexity.",
+          checkpoint: "You're ready for Level 2 when you can have a productive back-and-forth conversation with Claude, know when to verify its output, and understand how context shapes its responses.",
         },
       },
       {
@@ -105,7 +162,7 @@
       },
       {
         id: 3, title: "Command", subtitle: "Daily Workflows",
-        color: "#FFD166", darkColor: "#5C4813", icon: "⬢", duration: "~1 week",
+        color: "#BB86FC", darkColor: "#3C1A6E", icon: "⬢", duration: "~1 week",
         items: [
           "Slash commands: /compact, /clear, /model, /cost",
           "Keyboard shortcuts: Shift+Tab, Esc Esc, #, @, !",
@@ -160,7 +217,7 @@
       },
       {
         id: 5, title: "Automate", subtitle: "Advanced Agentic Patterns",
-        color: "#BB86FC", darkColor: "#3C1A6E", icon: "◆", duration: "~1 month",
+        color: "#FFD166", darkColor: "#5C4813", icon: "◆", duration: "~1 month",
         items: [
           "Explore → Plan → Code → Commit workflow",
           "Subagents & parallel Agent Teams (Ctrl+B)",
@@ -188,7 +245,7 @@
       },
       {
         id: 6, title: "Master", subtitle: "CI/CD & SDK",
-        color: "#FF6B6B", darkColor: "#5C1A1A", icon: "✦", duration: "Ongoing",
+        color: "#FF8C42", darkColor: "#5C2E0E", icon: "✦", duration: "Ongoing",
         items: [
           "GitHub Actions with claude-code-action@v1",
           "Headless mode: -p flag, JSON output, scripting",
@@ -227,6 +284,53 @@
       { cmd: "@", desc: "Autocomplete files", type: "key" },
     ];
 
+    function AgenticLoop({ color }) {
+      const [activeStep, setActiveStep] = useState(0);
+      const steps = ["Gather", "Act", "Verify", "Repeat"];
+
+      useEffect(() => {
+        const interval = setInterval(() => {
+          setActiveStep(prev => (prev + 1) % 4);
+        }, 1500);
+        return () => clearInterval(interval);
+      }, []);
+
+      return (
+        <div style={{
+          display: "flex", alignItems: "center", justifyContent: "center",
+          gap: "0", margin: "20px 0 12px",
+        }}>
+          {steps.map((step, i) => (
+            <React.Fragment key={step}>
+              <span style={{
+                fontSize: "12px", fontWeight: 600, letterSpacing: "0.5px",
+                fontFamily: "'JetBrains Mono', monospace",
+                color: activeStep === i ? color : "#777",
+                opacity: activeStep === i ? 1 : 0.6,
+                transition: "color 0.6s ease, opacity 0.6s ease",
+                padding: "6px 10px",
+                borderRadius: "6px",
+                background: activeStep === i ? `${color}08` : "transparent",
+              }}>
+                {step}
+              </span>
+              {i < 3 ? (
+                <span style={{
+                  fontSize: "10px", color: "#555", margin: "0 2px",
+                  fontFamily: "'JetBrains Mono', monospace",
+                }}>→</span>
+              ) : (
+                <span style={{
+                  fontSize: "10px", color: "#555", margin: "0 2px 0 4px",
+                  fontFamily: "'JetBrains Mono', monospace",
+                }}>↩</span>
+              )}
+            </React.Fragment>
+          ))}
+        </div>
+      );
+    }
+
     function Collapsible({ isOpen, children }) {
       const contentRef = useRef(null);
       const [height, setHeight] = useState(0);
@@ -258,6 +362,11 @@
       const [titleWord, setTitleWord] = useState("Code");
       const [isScrambling, setIsScrambling] = useState(false);
       const [expandedOverview, setExpandedOverview] = useState(null);
+      const [completedSteps, setCompletedSteps] = useState({});
+      const [expandedStep, setExpandedStep] = useState(null);
+      const [expandedPitfall, setExpandedPitfall] = useState(null);
+      const [discoveryTitle, setDiscoveryTitle] = useState("");
+      const [isDiscoveryScrambling, setIsDiscoveryScrambling] = useState(false);
 
       useEffect(() => { setMounted(true); }, []);
       useEffect(() => {
@@ -285,6 +394,33 @@
         return () => { clearTimeout(delay); clearInterval(interval); };
       }, []);
 
+      useEffect(() => {
+        if (activeStage !== 0) { setDiscoveryTitle(""); setIsDiscoveryScrambling(false); return; }
+        setDiscoveryTitle("");
+        let interval;
+        const delay = setTimeout(() => {
+          setIsDiscoveryScrambling(true);
+          let iteration = 0;
+          const target = "Discovery";
+          const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567890><{}[]|/\\*&@#";
+          interval = setInterval(() => {
+            setDiscoveryTitle(
+              target.split("").map((char, i) => {
+                if (iteration > i * 4 + 8) return char;
+                return chars[Math.floor(Math.random() * chars.length)];
+              }).join("")
+            );
+            iteration++;
+            if (iteration > target.length * 4 + 8) {
+              clearInterval(interval);
+              setDiscoveryTitle(target);
+              setIsDiscoveryScrambling(false);
+            }
+          }, 50);
+        }, 300);
+        return () => { clearTimeout(delay); clearInterval(interval); };
+      }, [activeStage]);
+
       const current = activeStage !== null ? stages[activeStage] : null;
       const glowColor = current ? current.color : "#5CC8FF";
 
@@ -295,7 +431,7 @@
 
       return (
         <div style={{
-          minHeight: "100vh", background: "#0A0A0F", color: "#E8E6E3",
+          minHeight: "100vh", background: "#181818", color: "#E8E6E3",
           fontFamily: "'JetBrains Mono', 'Fira Code', 'SF Mono', monospace",
           overflow: "hidden", position: "relative",
         }}>
@@ -321,7 +457,7 @@
             <h1 style={{
               fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 700, margin: 0,
               lineHeight: 1.05, letterSpacing: "-2px",
-              fontFamily: "'Space Grotesk', 'DM Sans', system-ui, sans-serif",
+              fontFamily: "'Space Grotesk', 'JetBrains Mono', monospace",
             }}>
               Claude{" "}
               <span style={{
@@ -346,9 +482,9 @@
                 transition: "all 0.5s ease", flexShrink: 0,
               }} />
               <p style={{
-                fontSize: "13px", color: "#555", margin: 0,
+                fontSize: "13px", color: "#777", margin: 0,
                 maxWidth: "480px", lineHeight: 1.5,
-                fontFamily: "'DM Sans', system-ui, sans-serif",
+                fontFamily: "'JetBrains Mono', monospace",
               }}>
                 Master Claude Code, from zero to agentic automation.
               </p>
@@ -399,33 +535,33 @@
                       <div style={{
                         width: "34px", height: "34px", display: "flex",
                         alignItems: "center", justifyContent: "center", fontSize: "15px",
-                        color: isActive ? stage.color : "#444",
-                        background: isActive ? `${stage.color}15` : "#141419",
+                        color: isActive ? stage.color : "#666",
+                        background: isActive ? `${stage.color}15` : "#262626",
                         borderRadius: "8px", transition: "all 0.3s ease", flexShrink: 0,
-                        border: `1px solid ${isActive ? stage.color + "30" : "#1E1E26"}`,
+                        border: `1px solid ${isActive ? stage.color + "30" : "#2E2E2E"}`,
                       }}>
                         {stage.icon}
                       </div>
                       <div style={{ flex: 1, minWidth: 0 }}>
                         <div style={{ display: "flex", alignItems: "baseline", gap: "8px" }}>
                           <span style={{
-                            fontSize: "9px", color: isActive ? stage.color : "#444",
+                            fontSize: "9px", color: isActive ? stage.color : "#666",
                             fontWeight: 600, letterSpacing: "2px", transition: "color 0.3s ease",
                           }}>
                             LEVEL {stage.id}
                           </span>
                           <span style={{
-                            fontSize: "9px", color: "#333",
-                            fontFamily: "'DM Sans', system-ui, sans-serif",
+                            fontSize: "9px", color: "#555",
+                            fontFamily: "'JetBrains Mono', monospace",
                           }}>
                             {stage.duration}
                           </span>
                         </div>
                         <div style={{
                           fontSize: "14px", fontWeight: 600,
-                          color: isActive ? "#E8E6E3" : "#666",
+                          color: isActive ? "#E8E6E3" : "#888",
                           transition: "color 0.3s ease",
-                          fontFamily: "'DM Sans', system-ui, sans-serif",
+                          fontFamily: "'JetBrains Mono', monospace",
                         }}>
                           {stage.title}
                         </div>
@@ -440,13 +576,13 @@
                 onClick={() => { setShowCommands(!showCommands); if (!showCommands) setActiveStage(null); }}
                 style={{
                   marginTop: "8px", padding: "10px 14px",
-                  background: showCommands ? "#141419" : "transparent",
+                  background: showCommands ? "#262626" : "transparent",
                   border: "1px solid",
-                  borderColor: showCommands ? "#2A2A35" : "#1A1A22",
+                  borderColor: showCommands ? "#3A3A3A" : "#2A2A2A",
                   borderRadius: "10px", cursor: "pointer",
                   display: "flex", alignItems: "center", gap: "10px",
-                  color: showCommands ? "#E8E6E3" : "#444",
-                  fontSize: "12px", fontFamily: "'DM Sans', system-ui, sans-serif",
+                  color: showCommands ? "#E8E6E3" : "#666",
+                  fontSize: "12px", fontFamily: "'JetBrains Mono', monospace",
                   transition: "all 0.3s ease",
                   opacity: mounted ? 1 : 0, transitionDelay: "500ms",
                 }}
@@ -454,7 +590,7 @@
                 <span style={{ fontSize: "13px" }}>⌘</span>
                 <span style={{ fontWeight: 500 }}>Essential Commands</span>
                 <span style={{
-                  fontSize: "11px", color: "#333", marginLeft: "auto",
+                  fontSize: "11px", color: "#555", marginLeft: "auto",
                   transform: showCommands ? "rotate(90deg)" : "rotate(0)",
                   transition: "transform 0.3s ease",
                 }}>
@@ -465,7 +601,7 @@
 
             {/* Right: Guide panel */}
             <div style={{
-              paddingLeft: "28px", borderLeft: "1px solid #1A1A22",
+              paddingLeft: "28px", borderLeft: "1px solid #2A2A2A",
               overflowY: "auto",
             }}>
               {showCommands ? (
@@ -473,22 +609,22 @@
                 <div style={{ animation: "fadeSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1)" }}>
                   <h3 style={{
                     fontSize: "20px", fontWeight: 600, margin: "0 0 6px",
-                    fontFamily: "'DM Sans', system-ui, sans-serif",
+                    fontFamily: "'JetBrains Mono', monospace",
                     color: "#E8E6E3", letterSpacing: "-0.5px",
                   }}>
                     Essential Commands
                   </h3>
                   <p style={{
-                    fontSize: "13px", color: "#555", margin: "0 0 24px",
-                    fontFamily: "'DM Sans', system-ui, sans-serif", lineHeight: 1.5,
+                    fontSize: "13px", color: "#777", margin: "0 0 24px",
+                    fontFamily: "'JetBrains Mono', monospace", lineHeight: 1.5,
                   }}>
                     The commands and shortcuts you'll use every session.
                   </p>
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
                     {essentialCommands.map((cmd, i) => (
                       <div key={i} style={{
-                        padding: "14px 16px", background: "#0E0E14",
-                        borderRadius: "10px", border: "1px solid #1A1A22",
+                        padding: "14px 16px", background: "#1F1F1F",
+                        borderRadius: "10px", border: "1px solid #2A2A2A",
                         animation: "fadeSlide 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
                         animationDelay: `${i * 40}ms`, animationFillMode: "both",
                       }}>
@@ -500,8 +636,8 @@
                           {cmd.cmd}
                         </code>
                         <div style={{
-                          fontSize: "12px", color: "#666", marginTop: "6px",
-                          fontFamily: "'DM Sans', system-ui, sans-serif",
+                          fontSize: "12px", color: "#888", marginTop: "6px",
+                          fontFamily: "'JetBrains Mono', monospace",
                         }}>
                           {cmd.desc}
                         </div>
@@ -510,8 +646,8 @@
                   </div>
                   <div style={{
                     marginTop: "16px", display: "flex", gap: "20px",
-                    fontSize: "11px", color: "#444",
-                    fontFamily: "'DM Sans', system-ui, sans-serif",
+                    fontSize: "11px", color: "#666",
+                    fontFamily: "'JetBrains Mono', monospace",
                   }}>
                     <span><span style={{ color: "#5CC8FF", marginRight: "6px" }}>●</span> Slash commands</span>
                     <span><span style={{ color: "#FFD166", marginRight: "6px" }}>●</span> Keyboard shortcuts</span>
@@ -523,10 +659,20 @@
                   {/* Title */}
                   <h2 style={{
                     fontSize: "clamp(24px, 3vw, 34px)", fontWeight: 700,
-                    margin: "0 0 4px", color: "#E8E6E3", letterSpacing: "-1px",
-                    fontFamily: "'DM Sans', system-ui, sans-serif",
+                    margin: "0 0 4px", color: "#E8E6E3",
+                    letterSpacing: "-1px",
+                    fontFamily: "'JetBrains Mono', monospace",
+                    minHeight: "1.2em",
                   }}>
-                    {current.title}
+                    {activeStage === 0 ? discoveryTitle : current.title}
+                    {isDiscoveryScrambling && (
+                      <span style={{
+                        display: "inline-block", width: "2px", height: "0.8em",
+                        background: current.color, marginLeft: "4px",
+                        verticalAlign: "baseline",
+                        animation: "blink 0.4s step-end infinite",
+                      }} />
+                    )}
                   </h2>
                   <div style={{
                     display: "inline-flex", alignItems: "center", gap: "8px",
@@ -544,31 +690,36 @@
                   </div>
                   {/* Key concepts */}
                   <div style={{ marginTop: "24px", marginBottom: current.overview ? "8px" : "28px" }}>
-                    <h3 style={{
-                      fontSize: "10px", letterSpacing: "2px",
-                      textTransform: "uppercase", color: current.color, opacity: 0.6,
-                      marginBottom: "12px",
-                    }}>
-                      Key concepts
-                    </h3>
+                    {(current.items.length > 0 || current.overview) && (
+                      <h3 style={{
+                        fontSize: "13px", letterSpacing: "2px",
+                        textTransform: "uppercase", color: current.color, opacity: 0.6,
+                        marginBottom: "12px",
+                      }}>
+                        Key concepts
+                      </h3>
+                    )}
                     {current.items.length > 0 && (
-                      <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                      <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
                         {current.items.map((item, j) => (
                           <div key={j} style={{
-                            display: "flex", alignItems: "flex-start", gap: "10px",
-                            padding: "8px 14px", background: "#0E0E14",
-                            borderRadius: "8px", border: "1px solid #1A1A22",
-                            animation: "fadeSlide 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
-                            animationDelay: `${j * 40}ms`, animationFillMode: "both",
+                            display: "flex", alignItems: "flex-start", gap: "12px",
+                            padding: "10px 14px", background: "#1F1F1F",
+                            borderRadius: "8px", border: "1px solid #2A2A2A",
+                            animation: "fadeSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+                            animationDelay: `${j * 50}ms`, animationFillMode: "both",
                           }}>
-                            <div style={{
-                              width: "5px", height: "5px", borderRadius: "50%",
-                              background: current.color, marginTop: "6px",
-                              flexShrink: 0, opacity: 0.5,
-                            }} />
                             <span style={{
-                              fontSize: "12.5px", lineHeight: 1.5, color: "#999",
-                              fontFamily: "'DM Sans', system-ui, sans-serif",
+                              fontSize: "11px", color: current.color,
+                              fontWeight: 600, opacity: 0.5,
+                              marginTop: "2px", flexShrink: 0,
+                              fontFamily: "'JetBrains Mono', monospace",
+                            }}>
+                              {j + 1}.
+                            </span>
+                            <span style={{
+                              fontSize: "14px", lineHeight: 1.5, color: "#D0CDC8",
+                              fontFamily: "'JetBrains Mono', monospace",
                             }}>
                               {item}
                             </span>
@@ -596,167 +747,392 @@
 
                   {/* Overview cards (Level 1 only) */}
                   {current.overview && (
-                    <div style={{ margin: "16px 0 20px", display: "flex", flexDirection: "column", gap: "8px" }}>
-                      {current.overview.map((item, j) => (
-                        <div key={j} className="overview-card" style={{
-                          background: "#0E0E14",
-                          borderRadius: "10px", border: "1px solid #1A1A22",
-                          animation: "fadeSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-                          animationDelay: `${j * 60}ms`, animationFillMode: "both",
-                          overflow: "hidden",
-                        }}>
-                          <button
-                            onClick={() => setExpandedOverview(expandedOverview === j ? null : j)}
-                            style={{
-                              width: "100%", display: "flex", alignItems: "center", gap: "10px",
-                              padding: "12px 16px",
-                              background: "none", border: "none", cursor: "pointer", textAlign: "left",
-                            }}
-                          >
-                            <div style={{
-                              width: "5px", height: "5px", borderRadius: "50%",
-                              background: current.color, flexShrink: 0, opacity: 0.5,
-                            }} />
-                            <span style={{
-                              fontSize: "12.5px", fontWeight: 600, color: "#999",
-                              fontFamily: "'DM Sans', system-ui, sans-serif",
-                              flex: 1,
+                    <div style={{ margin: "16px 0 20px", position: "relative" }}>
+                      {/* Connecting line */}
+                      <div style={{
+                        position: "absolute", left: "8px", top: "20px", bottom: "20px",
+                        width: "1px", background: `linear-gradient(to bottom, ${current.color}30, ${current.color}10)`,
+                        pointerEvents: "none",
+                      }} />
+                      <div style={{ display: "flex", flexDirection: "column", gap: "8px" }}>
+                        {current.overview.map((item, j) => {
+                          const isLast = j === current.overview.length - 1;
+                          return (
+                            <div key={j} className="overview-card" style={{
+                              background: "#1F1F1F",
+                              borderRadius: "10px", border: "1px solid",
+                              borderColor: expandedOverview === j ? `${current.color}25` : "#2A2A2A",
+                              animation: "fadeSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+                              animationDelay: `${j * 60}ms`, animationFillMode: "both",
+                              overflow: "hidden",
+                              marginLeft: "16px",
+                              transition: "border-color 0.3s ease",
                             }}>
-                              {item.title}
-                            </span>
-                            <span style={{
-                              fontSize: "11px", color: current.color,
-                              transition: "transform 0.3s ease",
-                              transform: expandedOverview === j ? "rotate(90deg)" : "rotate(0)",
-                              flexShrink: 0, opacity: 0.4,
-                            }}>
-                              ▸
-                            </span>
-                          </button>
-                          <Collapsible isOpen={expandedOverview === j}>
-                            <div style={{ padding: "0 16px 14px 31px" }}>
-                              <p style={{
-                                fontSize: "13px", lineHeight: 1.6, color: "#888",
-                                fontFamily: "'DM Sans', system-ui, sans-serif",
-                                margin: 0,
-                              }}
-                                dangerouslySetInnerHTML={{ __html: item.content }}
-                              />
+                              <button
+                                onClick={() => setExpandedOverview(expandedOverview === j ? null : j)}
+                                style={{
+                                  width: "100%", display: "flex", alignItems: "center", gap: "10px",
+                                  padding: "12px 16px",
+                                  background: "none", border: "none", cursor: "pointer", textAlign: "left",
+                                }}
+                              >
+                                <span style={{
+                                  fontSize: "11px", color: current.color, opacity: 0.5,
+                                  fontWeight: 600, flexShrink: 0,
+                                  fontFamily: "'JetBrains Mono', monospace",
+                                }}>
+                                  {j + 1}.
+                                </span>
+                                <span style={{
+                                  fontSize: "14px", fontWeight: 600, color: expandedOverview === j ? "#E8E6E3" : "#D0CDC8",
+                                  fontFamily: "'JetBrains Mono', monospace",
+                                  flex: 1, transition: "color 0.3s ease",
+                                }}>
+                                  {item.title}
+                                </span>
+                                <span style={{
+                                  fontSize: "11px", color: current.color,
+                                  transition: "transform 0.3s ease",
+                                  transform: expandedOverview === j ? "rotate(90deg)" : "rotate(0)",
+                                  flexShrink: 0, opacity: 0.4,
+                                }}>
+                                  ▸
+                                </span>
+                              </button>
+                              <Collapsible isOpen={expandedOverview === j}>
+                                <div style={{ padding: "0 16px 14px 42px" }}>
+                                  <p style={{
+                                    fontSize: "14px", lineHeight: 1.6, color: "#AAA",
+                                    fontFamily: "'JetBrains Mono', monospace",
+                                    margin: 0,
+                                  }}
+                                    dangerouslySetInnerHTML={{ __html: item.content }}
+                                  />
+                                  {item.visual === "agenticLoop" && (
+                                    <AgenticLoop color={current.color} />
+                                  )}
+                                  {item.contentAfterVisual && (
+                                    <p style={{
+                                      fontSize: "14px", lineHeight: 1.6, color: "#AAA",
+                                      fontFamily: "'JetBrains Mono', monospace",
+                                      margin: 0,
+                                    }}
+                                      dangerouslySetInnerHTML={{ __html: item.contentAfterVisual }}
+                                    />
+                                  )}
+                                  {!isLast && (
+                                    <button
+                                      onClick={(e) => { e.stopPropagation(); setExpandedOverview(j + 1); }}
+                                      style={{
+                                        display: "inline-flex", alignItems: "center", gap: "6px",
+                                        marginTop: "14px", padding: "6px 14px",
+                                        background: `${current.color}10`, border: `1px solid ${current.color}20`,
+                                        borderRadius: "6px", cursor: "pointer",
+                                        fontSize: "11px", fontWeight: 600,
+                                        color: current.color,
+                                        fontFamily: "'JetBrains Mono', monospace",
+                                        transition: "all 0.2s ease",
+                                      }}
+                                      onMouseEnter={(e) => {
+                                        e.currentTarget.style.background = `${current.color}20`;
+                                        e.currentTarget.style.borderColor = `${current.color}40`;
+                                      }}
+                                      onMouseLeave={(e) => {
+                                        e.currentTarget.style.background = `${current.color}10`;
+                                        e.currentTarget.style.borderColor = `${current.color}20`;
+                                      }}
+                                    >
+                                      Next: {current.overview[j + 1].title} <span>→</span>
+                                    </button>
+                                  )}
+                                </div>
+                              </Collapsible>
                             </div>
-                          </Collapsible>
-                        </div>
-                      ))}
+                          );
+                        })}
+                      </div>
                     </div>
                   )}
 
-                  <p style={{
-                    fontSize: "13px", color: "#555", margin: "0 0 20px",
-                    fontFamily: "'DM Sans', system-ui, sans-serif",
-                  }}>
-                    {current.subtitle}
-                  </p>
+                  {current.subtitle && (
+                    <p style={{
+                      fontSize: "14px", color: "#777", margin: "0 0 20px",
+                      fontFamily: "'JetBrains Mono', monospace",
+                    }}>
+                      {current.subtitle}
+                    </p>
+                  )}
 
                   {/* Description */}
-                  <p style={{
-                    fontSize: "14px", color: "#999", lineHeight: 1.65,
-                    fontFamily: "'DM Sans', system-ui, sans-serif",
-                    marginBottom: "24px", maxWidth: "600px",
-                  }}>
-                    {current.guide.description}
-                  </p>
+                  {current.guide.description && (
+                    <p style={{
+                      fontSize: "14px", color: "#BBB", lineHeight: 1.65,
+                      fontFamily: "'JetBrains Mono', monospace",
+                      marginBottom: "24px", maxWidth: "600px",
+                    }}>
+                      {current.guide.description}
+                    </p>
+                  )}
 
                   {/* Steps */}
                   <div style={{ marginBottom: "28px" }}>
                     <h3 style={{
-                      fontSize: "10px", letterSpacing: "2px",
-                      textTransform: "uppercase", color: "#555",
+                      fontSize: "13px", letterSpacing: "2px",
+                      textTransform: "uppercase", color: current.color, opacity: 0.6,
                       marginBottom: "12px",
                     }}>
                       What to do
                     </h3>
-                    <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                      {current.guide.steps.map((step, j) => (
-                        <div key={j} style={{
-                          display: "flex", alignItems: "flex-start", gap: "12px",
-                          padding: "10px 14px", background: "#0E0E14",
-                          borderRadius: "8px", border: "1px solid #1A1A22",
-                          animation: "fadeSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-                          animationDelay: `${j * 50}ms`, animationFillMode: "both",
-                        }}>
-                          <span style={{
-                            fontSize: "11px", color: current.color,
-                            fontWeight: 600, opacity: 0.5,
-                            marginTop: "2px", flexShrink: 0,
-                            fontFamily: "'JetBrains Mono', monospace",
-                          }}>
-                            {j + 1}.
-                          </span>
-                          <span style={{
-                            fontSize: "13px", lineHeight: 1.5, color: "#C0BDB8",
-                            fontFamily: "'DM Sans', system-ui, sans-serif",
-                          }}>
-                            {step}
-                          </span>
-                        </div>
-                      ))}
+                    <div style={{ position: "relative" }}>
+                      {/* Connecting line */}
+                      <div style={{
+                        position: "absolute", left: "8px", top: "20px", bottom: "20px",
+                        width: "1px", background: `linear-gradient(to bottom, ${current.color}30, ${current.color}10)`,
+                        pointerEvents: "none",
+                      }} />
+                      <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                        {current.guide.steps.map((step, j) => {
+                          const stepKey = `${current.id}-${j}`;
+                          const isDone = completedSteps[stepKey];
+                          const isObject = typeof step === "object";
+                          const stepTitle = isObject ? step.title : step;
+                          const stepDetail = isObject ? step.detail : null;
+                          const isExpanded = expandedStep === stepKey;
+                          return (
+                            <div key={j} style={{
+                              background: "#1F1F1F",
+                              borderRadius: "8px", border: "1px solid",
+                              borderColor: isExpanded ? `${current.color}25` : "#2A2A2A",
+                              animation: "fadeSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+                              animationDelay: `${j * 50}ms`, animationFillMode: "both",
+                              marginLeft: "16px",
+                              opacity: isDone ? 0.5 : 1,
+                              transition: "opacity 0.3s ease, border-color 0.3s ease",
+                              overflow: "hidden",
+                            }}>
+                              <div style={{
+                                display: "flex", alignItems: "flex-start", gap: "12px",
+                                padding: "10px 14px",
+                              }}>
+                                <button
+                                  onClick={(e) => { e.stopPropagation(); setCompletedSteps(prev => ({ ...prev, [stepKey]: !prev[stepKey] })); }}
+                                  style={{
+                                    width: "16px", height: "16px", borderRadius: "4px",
+                                    border: `1.5px solid ${isDone ? current.color : current.color + "40"}`,
+                                    background: isDone ? `${current.color}20` : "transparent",
+                                    cursor: "pointer", flexShrink: 0, marginTop: "2px",
+                                    display: "flex", alignItems: "center", justifyContent: "center",
+                                    transition: "all 0.2s ease", padding: 0,
+                                  }}
+                                >
+                                  {isDone && (
+                                    <span style={{ fontSize: "10px", color: current.color, lineHeight: 1 }}>✓</span>
+                                  )}
+                                </button>
+                                <span
+                                  onClick={() => stepDetail && setExpandedStep(isExpanded ? null : stepKey)}
+                                  style={{
+                                    fontSize: "14px", lineHeight: 1.5, color: "#D0CDC8",
+                                    fontFamily: "'JetBrains Mono', monospace",
+                                    textDecoration: isDone ? "line-through" : "none",
+                                    textDecorationColor: isDone ? "#777" : "transparent",
+                                    cursor: stepDetail ? "pointer" : "default",
+                                    flex: 1,
+                                  }}
+                                  dangerouslySetInnerHTML={{ __html: stepTitle }}
+                                />
+                                {stepDetail && (
+                                  <span
+                                    onClick={() => setExpandedStep(isExpanded ? null : stepKey)}
+                                    style={{
+                                      fontSize: "11px", color: current.color,
+                                      transition: "transform 0.3s ease",
+                                      transform: isExpanded ? "rotate(90deg)" : "rotate(0)",
+                                      flexShrink: 0, opacity: 0.4,
+                                      cursor: "pointer", marginTop: "4px",
+                                    }}
+                                  >
+                                    ▸
+                                  </span>
+                                )}
+                              </div>
+                              {stepDetail && (
+                                <Collapsible isOpen={isExpanded}>
+                                  <div style={{ padding: "0 14px 14px 42px" }}>
+                                    <p className="overview-card" style={{
+                                      fontSize: "13px", lineHeight: 1.6, color: "#AAA",
+                                      fontFamily: "'JetBrains Mono', monospace",
+                                      margin: 0,
+                                    }}
+                                      dangerouslySetInnerHTML={{ __html: stepDetail }}
+                                    />
+                                  </div>
+                                </Collapsible>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
                   </div>
 
                   {/* Pitfalls */}
                   <div style={{ marginBottom: "28px" }}>
                     <h3 style={{
-                      fontSize: "10px", letterSpacing: "2px",
+                      fontSize: "13px", letterSpacing: "2px",
                       textTransform: "uppercase", color: "#EF476F",
                       marginBottom: "12px", opacity: 0.7,
                     }}>
                       Common pitfalls
                     </h3>
-                    <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
-                      {current.guide.pitfalls.map((pitfall, j) => (
-                        <div key={j} style={{
-                          display: "flex", alignItems: "flex-start", gap: "12px",
-                          padding: "10px 14px", background: "#14080A",
-                          borderRadius: "8px", border: "1px solid #2A1215",
-                          animation: "fadeSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-                          animationDelay: `${(current.guide.steps.length + j) * 50}ms`,
-                          animationFillMode: "both",
-                        }}>
-                          <span style={{
-                            fontSize: "11px", color: "#EF476F",
-                            opacity: 0.5, marginTop: "2px", flexShrink: 0,
-                          }}>
-                            ⚠
-                          </span>
-                          <span style={{
-                            fontSize: "13px", lineHeight: 1.5, color: "#998",
-                            fontFamily: "'DM Sans', system-ui, sans-serif",
-                          }}>
-                            {pitfall}
-                          </span>
-                        </div>
-                      ))}
+                    <div style={{ position: "relative" }}>
+                      {/* Connecting line */}
+                      <div style={{
+                        position: "absolute", left: "8px", top: "20px", bottom: "20px",
+                        width: "1px", background: "linear-gradient(to bottom, #EF476F30, #EF476F10)",
+                        pointerEvents: "none",
+                      }} />
+                      <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                        {current.guide.pitfalls.map((pitfall, j) => {
+                          const isPitfallObject = typeof pitfall === "object";
+                          const pitfallTitle = isPitfallObject ? pitfall.title : pitfall;
+                          const pitfallDetail = isPitfallObject ? pitfall.detail : null;
+                          const pitfallKey = `${current.id}-pitfall-${j}`;
+                          const isPitfallExpanded = expandedPitfall === pitfallKey;
+                          return (
+                            <div key={j} style={{
+                              background: "#201215",
+                              borderRadius: "8px", border: "1px solid",
+                              borderColor: isPitfallExpanded ? "#EF476F25" : "#3A2225",
+                              animation: "fadeSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+                              animationDelay: `${(current.guide.steps.length + j) * 50}ms`,
+                              animationFillMode: "both",
+                              marginLeft: "16px",
+                              overflow: "hidden",
+                              transition: "border-color 0.3s ease",
+                            }}>
+                              <div style={{
+                                display: "flex", alignItems: "flex-start", gap: "12px",
+                                padding: "10px 14px",
+                              }}>
+                                <span style={{
+                                  fontSize: "11px", color: "#EF476F",
+                                  fontWeight: 600, opacity: 0.5,
+                                  marginTop: "2px", flexShrink: 0,
+                                  fontFamily: "'JetBrains Mono', monospace",
+                                }}>
+                                  {j + 1}.
+                                </span>
+                                <span
+                                  onClick={() => pitfallDetail && setExpandedPitfall(isPitfallExpanded ? null : pitfallKey)}
+                                  style={{
+                                    fontSize: "14px", lineHeight: 1.5, color: "#D0CDC8",
+                                    fontFamily: "'JetBrains Mono', monospace",
+                                    cursor: pitfallDetail ? "pointer" : "default",
+                                    flex: 1,
+                                  }}
+                                >
+                                  {pitfallTitle}
+                                </span>
+                                {pitfallDetail && (
+                                  <span
+                                    onClick={() => setExpandedPitfall(isPitfallExpanded ? null : pitfallKey)}
+                                    style={{
+                                      fontSize: "11px", color: "#EF476F",
+                                      transition: "transform 0.3s ease",
+                                      transform: isPitfallExpanded ? "rotate(90deg)" : "rotate(0)",
+                                      flexShrink: 0, opacity: 0.4,
+                                      cursor: "pointer", marginTop: "4px",
+                                    }}
+                                  >
+                                    ▸
+                                  </span>
+                                )}
+                              </div>
+                              {pitfallDetail && (
+                                <Collapsible isOpen={isPitfallExpanded}>
+                                  <div style={{ padding: "0 14px 14px 42px" }}>
+                                    <p className="overview-card" style={{
+                                      fontSize: "13px", lineHeight: 1.6, color: "#AAA",
+                                      fontFamily: "'JetBrains Mono', monospace",
+                                      margin: 0,
+                                    }}
+                                      dangerouslySetInnerHTML={{ __html: pitfallDetail }}
+                                    />
+                                  </div>
+                                </Collapsible>
+                              )}
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
                   </div>
 
-                  {/* Checkpoint */}
+                  {/* Ready check */}
                   <div style={{
                     padding: "16px 18px", background: `${current.darkColor}40`,
                     borderRadius: "10px", border: `1px solid ${current.color}15`,
                   }}>
                     <h3 style={{
-                      fontSize: "10px", letterSpacing: "2px",
+                      fontSize: "13px", letterSpacing: "2px",
                       textTransform: "uppercase", color: current.color,
                       marginBottom: "10px", opacity: 0.6,
                     }}>
-                      Checkpoint
+                      Ready for next level?
                     </h3>
                     <p style={{
-                      fontSize: "13px", lineHeight: 1.6, color: "#999",
-                      fontFamily: "'DM Sans', system-ui, sans-serif",
+                      fontSize: "14px", lineHeight: 1.6, color: "#D0CDC8",
+                      fontFamily: "'JetBrains Mono', monospace",
                       margin: 0,
                     }}>
                       {current.guide.checkpoint}
                     </p>
+                    <a
+                      href="https://platform.claude.com/docs/en/home"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      style={{
+                        display: "inline-flex", alignItems: "center", gap: "6px",
+                        marginTop: "12px", fontSize: "12px",
+                        color: current.color, opacity: 0.5,
+                        textDecoration: "none",
+                        fontFamily: "'JetBrains Mono', monospace",
+                        transition: "opacity 0.2s ease",
+                      }}
+                      onMouseEnter={(e) => e.currentTarget.style.opacity = "0.8"}
+                      onMouseLeave={(e) => e.currentTarget.style.opacity = "0.5"}
+                    >
+                      <span>→</span> Explore the official docs
+                    </a>
+                    {activeStage < stages.length - 1 && (
+                      <div style={{ marginTop: "16px" }}>
+                        <button
+                          onClick={() => { setActiveStage(activeStage + 1); setExpandedOverview(null); }}
+                          style={{
+                            display: "inline-flex", alignItems: "center", gap: "8px",
+                            padding: "10px 20px",
+                          background: `${current.color}15`,
+                          border: `1px solid ${current.color}30`,
+                          borderRadius: "8px", cursor: "pointer",
+                          fontSize: "13px", fontWeight: 600,
+                          color: current.color,
+                          fontFamily: "'JetBrains Mono', monospace",
+                          transition: "all 0.2s ease",
+                        }}
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.background = `${current.color}25`;
+                          e.currentTarget.style.borderColor = `${current.color}50`;
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.background = `${current.color}15`;
+                          e.currentTarget.style.borderColor = `${current.color}30`;
+                        }}
+                      >
+                          Continue to Level {stages[activeStage + 1].id}: {stages[activeStage + 1].title} <span>→</span>
+                        </button>
+                      </div>
+                    )}
                   </div>
                 </div>
               ) : (
@@ -768,20 +1144,20 @@
                 }}>
                   <div style={{
                     fontSize: "11px", letterSpacing: "3px", textTransform: "uppercase",
-                    color: "#333", marginBottom: "12px",
+                    color: "#555", marginBottom: "12px",
                   }}>
                     Getting Started
                   </div>
                   <h2 style={{
-                    fontSize: "24px", fontWeight: 700, color: "#555",
-                    fontFamily: "'DM Sans', system-ui, sans-serif",
+                    fontSize: "24px", fontWeight: 700, color: "#777",
+                    fontFamily: "'JetBrains Mono', monospace",
                     letterSpacing: "-0.5px", margin: "0 0 12px",
                   }}>
                     Select a level to begin
                   </h2>
                   <p style={{
-                    fontSize: "14px", color: "#444", lineHeight: 1.6,
-                    fontFamily: "'DM Sans', system-ui, sans-serif",
+                    fontSize: "14px", color: "#666", lineHeight: 1.6,
+                    fontFamily: "'JetBrains Mono', monospace",
                     maxWidth: "400px",
                   }}>
                     Each level builds on the previous one. Start with Level 1 to understand the fundamentals,
@@ -795,14 +1171,14 @@
           {/* Bottom progress bar */}
           <div style={{
             position: "fixed", bottom: 0, left: 0, right: 0,
-            height: "3px", background: "#0E0E14", zIndex: 10,
+            height: "3px", background: "#1F1F1F", zIndex: 10,
           }}>
             <div style={{
               height: "100%",
               width: activeStage !== null ? `${((activeStage + 1) / stages.length) * 100}%` : "0%",
               background: current
                 ? `linear-gradient(90deg, ${current.color}80, ${current.color})`
-                : "#333",
+                : "#555",
               transition: "all 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
               borderRadius: "0 2px 2px 0",
             }} />
