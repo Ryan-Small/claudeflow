@@ -14,7 +14,18 @@
       from { opacity: 0; transform: translateY(12px); }
       to { opacity: 1; transform: translateY(0); }
     }
+    @keyframes expandDown {
+      from { opacity: 0; max-height: 0; }
+      to { opacity: 1; max-height: 500px; }
+    }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
     button:focus-visible { outline: 2px solid #5CC8FF; outline-offset: 2px; }
+    .overview-card b { color: #C0BDB8; }
+    .overview-card a { text-decoration: none; }
+    .overview-card a:hover { opacity: 1 !important; text-decoration: underline; }
     ::-webkit-scrollbar { width: 4px; }
     ::-webkit-scrollbar-track { background: transparent; }
     ::-webkit-scrollbar-thumb { background: #2A2A35; border-radius: 2px; }
@@ -26,19 +37,43 @@
 <body>
   <div id="root"></div>
   <script type="text/babel">
-    const { useState, useEffect } = React;
+    const { useState, useEffect, useRef, useCallback } = React;
 
     const stages = [
       {
-        id: 1, title: "Understand", subtitle: "What Claude Code Is",
+        id: 1, title: "Getting Started", subtitle: "What Claude Code Is",
         color: "#6FFFE9", darkColor: "#1B4332", icon: "◈", duration: "~1 hour",
-        items: [
-          "Agentic loop: gather → act → verify → repeat",
-          "Five core capabilities: understand, edit, run, git, connect",
-          "Three models: Sonnet (default), Opus (power), Haiku (speed)",
-          "Read official overview & architecture docs",
+        overview: [
+          {
+            title: "Agentic AI",
+            content: 'Imagine you ask a regular AI to help you bake a cake. It gives you a recipe and stops — you still have to gather ingredients, mix them, preheat the oven, and do everything yourself. Now imagine an AI that actually walks into the kitchen: it checks what ingredients you have, goes to the store for what\'s missing, mixes the batter, sets the oven temperature, puts the cake in, and checks on it until it\'s done.<br/><br/>That\'s the difference between traditional AI and agentic AI. Traditional AI answers questions. <b>Agentic AI takes action.</b> It breaks a big task into smaller steps, does each step on its own, checks whether it worked, and adjusts if something goes wrong — all without you telling it every move.<br/><br/>When people say "agentic," they mean the AI has agency: the ability to decide what to do next and actually do it.<br/><br/>This decision-making process follows what\'s called the <b>agentic loop</b>:<br/><br/><b>Gather</b> — the agent looks around and collects information. What files exist? What does the code say? What error just happened?<br/><b>Act</b> — based on what it learned, the agent takes an action. Edit a file, run a command, create a new function.<br/><b>Verify</b> — the agent checks whether the action worked. Did the tests pass? Did the error go away? Does the output look right?<br/><b>Repeat</b> — if the task isn\'t done, it goes back to the beginning. Gather new information, take the next action, verify again.<br/><br/>This loop runs continuously until the job is complete. It\'s the same pattern you follow when solving a problem yourself — look at the situation, try something, check the result, adjust. The difference is that an agentic AI does this <b>autonomously</b>, deciding at each step what to do next without waiting for you to tell it.',
+          },
+          {
+            title: "Claude",
+            content: '<a href="https://www.anthropic.com/claude" target="_blank" rel="noopener noreferrer" style="color: #6FFFE9; opacity: 0.8;">Claude</a> is an AI assistant made by <a href="https://www.anthropic.com" target="_blank" rel="noopener noreferrer" style="color: #6FFFE9; opacity: 0.8;">Anthropic</a>. You talk to it in plain English (or any language), and it talks back. You can ask it to explain a concept, write an essay, analyze data, generate code, or brainstorm ideas. It\'s like having a <b>very knowledgeable colleague</b> available 24/7 who never gets tired or impatient.<br/><br/>You can access Claude in three ways:<br/><b>Web</b> — through <a href="https://claude.ai" target="_blank" rel="noopener noreferrer" style="color: #6FFFE9; opacity: 0.8;">claude.ai</a> (just open a browser and start chatting)<br/><b>Desktop</b> — through an <a href="https://claude.ai/download" target="_blank" rel="noopener noreferrer" style="color: #6FFFE9; opacity: 0.8;">app on your computer</a><br/><b>API</b> — which lets developers <a href="https://docs.anthropic.com/en/api/getting-started" target="_blank" rel="noopener noreferrer" style="color: #6FFFE9; opacity: 0.8;">build Claude into their own software</a><br/><br/>No matter how you access it, you\'re talking to the same Claude — it\'s the <b>brain</b> behind all of these interfaces.',
+          },
+          {
+            title: "Claude Code",
+            content: 'Think of Claude as a <b>brilliant advisor sitting in a room with no doors</b>. You walk in, describe your problem, and Claude gives you a thoughtful answer — but it can\'t leave the room. It can\'t look at your files, run your code, or make changes to your project. You have to do all of that yourself and come back to report what happened.<br/><br/><a href="https://docs.anthropic.com/en/docs/claude-code/overview" target="_blank" rel="noopener noreferrer" style="color: #6FFFE9; opacity: 0.8;">Claude Code</a> <b>opens the doors</b>. It\'s a tool you run in your terminal (the command-line interface developers use) that connects Claude directly to your project. Now Claude can:<br/><br/><b>Read</b> your files to understand your code<br/><b>Edit</b> files to make changes<br/><b>Run</b> commands to test things<br/><b>Manage git</b> to track your work<br/><b>Connect</b> to services like GitHub<br/><br/>Claude is the brain. Claude Code gives it <b>hands, eyes, and feet</b>. Together, they turn Claude from someone who gives advice into someone who <b>does the work alongside you</b>.<br/><br/>That brain comes in <b>three tiers</b>. <b>Opus</b> is the smartest and most thorough — best for complex architecture and tricky debugging, but slower and pricier. <b>Sonnet</b> is the everyday workhorse and the <b>default model</b> — fast and capable enough for most tasks. <b>Haiku</b> is the quickest and cheapest — great for simple lookups, boilerplate, and formatting. You can <b>switch between them anytime</b>. Learn more about <a href="https://docs.anthropic.com/en/docs/about-claude/models" target="_blank" rel="noopener noreferrer" style="color: #6FFFE9; opacity: 0.8;">Claude\'s model tiers</a>.',
+          },
         ],
+        items: [],
         keyResource: "code.claude.com/docs/en/overview",
+        guide: {
+          description: "Before opening a terminal, build a mental model of how Claude Code works. Understanding the agentic loop — how Claude gathers context, takes actions, verifies results, and iterates — will shape how you write prompts and what you expect from the tool.",
+          steps: [
+            "Read the official Claude Code overview and architecture documentation",
+            "Understand the agentic loop: gather context → decide action → execute → verify → repeat",
+            "Map the five core capabilities: understand code, edit files, run commands, manage git, connect to external tools",
+            "Compare model tiers: Opus (complex reasoning, architecture), Sonnet (daily development), Haiku (quick tasks, boilerplate)",
+            "Watch or read 2–3 real-world usage examples to see the loop in action",
+          ],
+          pitfalls: [
+            "Skipping the docs and learning by trial-and-error wastes tokens and builds bad habits",
+            "Assuming Claude Code is just autocomplete — it's an autonomous agent with a fundamentally different interaction model",
+          ],
+          checkpoint: "You can explain the agentic loop to a colleague and confidently choose between Opus, Sonnet, and Haiku based on task complexity.",
+        },
       },
       {
         id: 2, title: "Install", subtitle: "Setup & First Session",
@@ -50,6 +85,23 @@
           "Understand Pro vs Max vs API billing",
         ],
         keyResource: "code.claude.com/docs/en/setup",
+        guide: {
+          description: "Install Claude Code and run your first interactive session. By the end, you'll have a working installation, authenticated access, and an initialized project with a generated CLAUDE.md file.",
+          steps: [
+            "Install Claude Code using the native installer — no Node.js or package manager required",
+            "Authenticate with OAuth (recommended for Pro/Max) or an API key",
+            "Navigate to a project directory and run `claude` to start your first session",
+            "Run `/init` to generate an initial CLAUDE.md file for your project",
+            "Run `/help` to see available commands and keyboard shortcuts",
+            "Check `/cost` to understand your current billing tier and usage",
+          ],
+          pitfalls: [
+            "Installing via npm instead of the native installer can cause permission and PATH issues",
+            "Not running `/init` means Claude has no project context — it will ask basic questions every session",
+            "Forgetting to check `/cost` early can lead to unexpected bills on API billing",
+          ],
+          checkpoint: "Claude Code launches, you've authenticated, and `/init` has generated a CLAUDE.md. You understand whether you're on Pro, Max, or API billing.",
+        },
       },
       {
         id: 3, title: "Command", subtitle: "Daily Workflows",
@@ -61,6 +113,22 @@
           "Permission modes: default, acceptEdits, plan",
         ],
         keyResource: "code.claude.com/docs/en/best-practices",
+        guide: {
+          description: "Build the muscle memory and mental models for productive daily use. CLAUDE.md is your highest-leverage tool — a well-crafted one transforms every interaction. Permission modes control how much autonomy Claude has.",
+          steps: [
+            "Master essential slash commands: /compact (compress context), /clear (reset), /model (switch), /cost (check spend)",
+            "Practice keyboard shortcuts until automatic: Shift+Tab (cycle permissions), Esc Esc (rewind), # (memory), @ (file autocomplete)",
+            "Write a thorough CLAUDE.md: project architecture, conventions, file structure, testing approach, common patterns",
+            "Experiment with permission modes: default (ask first), acceptEdits (trust file changes), plan (design before doing)",
+            "Learn to recognize when context is getting stale and use /compact proactively",
+          ],
+          pitfalls: [
+            "Writing a vague CLAUDE.md ('This is a Python project') — be specific about conventions, patterns, and boundaries",
+            "Never using /compact until Claude starts hallucinating — by then you've wasted tokens on degraded output",
+            "Running in acceptEdits mode on unfamiliar codebases — start with default until you trust Claude's understanding",
+          ],
+          checkpoint: "You use shortcuts without thinking about them. Your CLAUDE.md is specific enough that Claude follows your conventions without re-prompting. You switch permission modes based on task risk.",
+        },
       },
       {
         id: 4, title: "Integrate", subtitle: "MCP & Configuration",
@@ -72,6 +140,23 @@
           "Team config via .claude/settings.json & .mcp.json",
         ],
         keyResource: "code.claude.com/docs/en/mcp",
+        guide: {
+          description: "Connect Claude Code to your development ecosystem. MCP (Model Context Protocol) servers let Claude read GitHub issues, query databases, access Notion docs, and more — all within the conversation. This is where Claude stops being a code editor and becomes a development partner.",
+          steps: [
+            "Configure your first MCP server: start with GitHub to read issues and create PRs",
+            "Add a database MCP server so Claude can query your app's data directly",
+            "Understand the settings hierarchy: global (~/.claude/) → project (.claude/) → local (settings.local.json)",
+            "Set up team-shareable config in .claude/settings.json and .mcp.json",
+            "Practice context management: use /compact to reclaim space, subagents to isolate concerns",
+            "Build a ticket-to-PR workflow: read issue → implement → test → open PR, all in one conversation",
+          ],
+          pitfalls: [
+            "Giving MCP servers write access before you trust the workflow — start read-only, add writes later",
+            "Putting secrets in .mcp.json instead of environment variables — the file gets committed to git",
+            "Not understanding the settings hierarchy — local settings override project settings override global",
+          ],
+          checkpoint: "Claude reads your GitHub issues, queries your database, and creates pull requests without you leaving the conversation. Your team shares a common .claude/ configuration.",
+        },
       },
       {
         id: 5, title: "Automate", subtitle: "Advanced Agentic Patterns",
@@ -83,6 +168,23 @@
           "Hooks: PreToolUse, PostToolUse, Stop events",
         ],
         keyResource: "code.claude.com/docs/en/sub-agents",
+        guide: {
+          description: "Build sophisticated multi-step workflows. Subagents handle specialized tasks in isolated contexts. Hooks automate repetitive actions on every tool use. Skills codify your patterns so Claude applies them consistently.",
+          steps: [
+            "Master the Explore → Plan → Code → Commit workflow for complex features",
+            "Configure subagents for specialized roles: code reviewer, test writer, database analyst",
+            "Use Ctrl+B to launch parallel Agent Teams for independent subtasks",
+            "Set up PreToolUse hooks (branch guards, validation) and PostToolUse hooks (auto-format, auto-test)",
+            "Create custom skills in .claude/skills/ to codify your project's patterns and templates",
+            "Build a slash command that orchestrates multiple subagents for end-to-end feature delivery",
+          ],
+          pitfalls: [
+            "Over-orchestrating simple tasks — not everything needs subagents. Use them when context isolation matters.",
+            "Hooks that are too aggressive — a hook that runs the full test suite on every file edit will destroy your feedback loop",
+            "Subagents without clear boundaries — define exactly what each agent can and cannot do in its prompt",
+          ],
+          checkpoint: "You launch /project:feature and Claude orchestrates specialists — reviewer, tester, analyst — while your main context stays clean. Hooks auto-format and auto-test on every edit.",
+        },
       },
       {
         id: 6, title: "Master", subtitle: "CI/CD & SDK",
@@ -94,6 +196,23 @@
           "Extended thinking & adaptive reasoning",
         ],
         keyResource: "code.claude.com/docs/en/github-actions",
+        guide: {
+          description: "Scale Claude Code beyond your local machine. Run it in CI/CD to auto-review PRs, use headless mode for scripting and automation, and build custom agents with the SDK. This is where Claude Code becomes infrastructure.",
+          steps: [
+            "Set up a GitHub Action using claude-code-action@v1 for automated PR reviews",
+            "Learn headless mode: use the -p flag for non-interactive prompts and JSON output for scripting",
+            "Explore the Agent SDK (TypeScript and Python) for building custom agentic workflows",
+            "Configure extended thinking for complex architectural decisions and multi-file refactors",
+            "Build a CI pipeline that validates conventions, checks test coverage, and comments results on PRs",
+            "Package your entire .claude/ configuration as a distributable setup for team onboarding",
+          ],
+          pitfalls: [
+            "Running Claude in CI without cost controls — set token limits and model constraints in the action config",
+            "Using Opus in CI for simple reviews — Sonnet or Haiku handles most review tasks at a fraction of the cost",
+            "Not testing your headless scripts locally before deploying to CI — debug interactively first",
+          ],
+          checkpoint: "PRs are automatically reviewed in CI. You can script Claude Code for batch operations. New team members get your full Claude Code setup with one command.",
+        },
       },
     ];
 
@@ -108,16 +227,71 @@
       { cmd: "@", desc: "Autocomplete files", type: "key" },
     ];
 
+    function Collapsible({ isOpen, children }) {
+      const contentRef = useRef(null);
+      const [height, setHeight] = useState(0);
+
+      useEffect(() => {
+        if (contentRef.current) {
+          setHeight(contentRef.current.scrollHeight);
+        }
+      }, [isOpen, children]);
+
+      return (
+        <div style={{
+          maxHeight: isOpen ? height + "px" : "0px",
+          opacity: isOpen ? 1 : 0,
+          overflow: "hidden",
+          transition: "max-height 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease",
+        }}>
+          <div ref={contentRef}>
+            {children}
+          </div>
+        </div>
+      );
+    }
+
     function ClaudeCodeRoadmap() {
       const [activeStage, setActiveStage] = useState(0);
-      const [hoveredStage, setHoveredStage] = useState(null);
       const [mounted, setMounted] = useState(false);
       const [showCommands, setShowCommands] = useState(false);
+      const [titleWord, setTitleWord] = useState("Code");
+      const [isScrambling, setIsScrambling] = useState(false);
+      const [expandedOverview, setExpandedOverview] = useState(null);
 
       useEffect(() => { setMounted(true); }, []);
+      useEffect(() => {
+        let interval;
+        const delay = setTimeout(() => {
+          setIsScrambling(true);
+          let iteration = 0;
+          const target = "Flow";
+          const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567890><{}[]|/\\*&@#";
+          interval = setInterval(() => {
+            setTitleWord(
+              target.split("").map((char, i) => {
+                if (iteration > i * 4 + 8) return char;
+                return chars[Math.floor(Math.random() * chars.length)];
+              }).join("")
+            );
+            iteration++;
+            if (iteration > target.length * 4 + 8) {
+              clearInterval(interval);
+              setTitleWord(target);
+              setIsScrambling(false);
+            }
+          }, 50);
+        }, 800);
+        return () => { clearTimeout(delay); clearInterval(interval); };
+      }, []);
 
-      const displayStage = hoveredStage !== null ? hoveredStage : activeStage;
-      const current = stages[displayStage];
+      const current = activeStage !== null ? stages[activeStage] : null;
+      const glowColor = current ? current.color : "#5CC8FF";
+
+      const toggleStage = (i) => {
+        setShowCommands(false);
+        setActiveStage(i);
+      };
 
       return (
         <div style={{
@@ -128,242 +302,188 @@
           {/* Ambient glow */}
           <div style={{
             position: "fixed", top: "-30%", right: "-20%", width: "70%", height: "70%",
-            background: `radial-gradient(ellipse, ${current.color}08 0%, transparent 70%)`,
+            background: `radial-gradient(ellipse, ${glowColor}08 0%, transparent 70%)`,
             transition: "background 0.8s ease", pointerEvents: "none",
           }} />
           <div style={{
             position: "fixed", bottom: "-20%", left: "-10%", width: "50%", height: "50%",
-            background: `radial-gradient(ellipse, ${current.color}05 0%, transparent 70%)`,
+            background: `radial-gradient(ellipse, ${glowColor}05 0%, transparent 70%)`,
             transition: "background 0.8s ease", pointerEvents: "none",
           }} />
 
           {/* Header */}
           <header style={{
-            padding: "40px 48px 0", position: "relative", zIndex: 2,
+            padding: "32px 48px 0", position: "relative", zIndex: 2,
             opacity: mounted ? 1 : 0,
             transform: mounted ? "translateY(0)" : "translateY(-20px)",
             transition: "all 0.8s cubic-bezier(0.16, 1, 0.3, 1)",
           }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "14px", marginBottom: "6px" }}>
-              <div style={{
-                width: "10px", height: "10px", borderRadius: "50%",
-                background: current.color, boxShadow: `0 0 12px ${current.color}80`,
-                transition: "all 0.5s ease",
-              }} />
-              <span style={{ fontSize: "11px", letterSpacing: "4px", textTransform: "uppercase", color: "#666" }}>
-                Learning Roadmap
-              </span>
-            </div>
             <h1 style={{
-              fontSize: "clamp(32px, 5vw, 56px)", fontWeight: 700, margin: 0,
+              fontSize: "clamp(28px, 4vw, 48px)", fontWeight: 700, margin: 0,
               lineHeight: 1.05, letterSpacing: "-2px",
               fontFamily: "'Space Grotesk', 'DM Sans', system-ui, sans-serif",
             }}>
               Claude{" "}
-              <span style={{ color: current.color, transition: "color 0.5s ease" }}>Code</span>
+              <span style={{
+                color: glowColor, transition: "color 0.5s ease",
+                fontFamily: "'JetBrains Mono', monospace",
+                letterSpacing: isScrambling ? "1px" : "-2px",
+                transition: "letter-spacing 0.3s ease, color 0.5s ease",
+              }}>{titleWord}</span>
+              {isScrambling && (
+                <span style={{
+                  display: "inline-block", width: "2px", height: "0.8em",
+                  background: glowColor, marginLeft: "4px",
+                  verticalAlign: "baseline",
+                  animation: "blink 0.4s step-end infinite",
+                }} />
+              )}
             </h1>
-            <p style={{
-              fontSize: "14px", color: "#555", margin: "8px 0 0",
-              maxWidth: "480px", lineHeight: 1.5,
-              fontFamily: "'DM Sans', system-ui, sans-serif",
-            }}>
-              From first install to advanced agentic automation — a six-stage path to mastery.
-            </p>
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", margin: "8px 0 0" }}>
+              <div style={{
+                width: "8px", height: "8px", borderRadius: "50%",
+                background: glowColor, boxShadow: `0 0 12px ${glowColor}80`,
+                transition: "all 0.5s ease", flexShrink: 0,
+              }} />
+              <p style={{
+                fontSize: "13px", color: "#555", margin: 0,
+                maxWidth: "480px", lineHeight: 1.5,
+                fontFamily: "'DM Sans', system-ui, sans-serif",
+              }}>
+                Master Claude Code, from zero to agentic automation.
+              </p>
+            </div>
           </header>
 
           {/* Main content */}
           <div style={{
-            display: "grid", gridTemplateColumns: "1fr 1fr", gap: "0",
-            padding: "36px 48px 48px", position: "relative", zIndex: 2,
-            minHeight: "calc(100vh - 180px)",
+            display: "grid", gridTemplateColumns: "3fr 9fr",
+            padding: "28px 48px 48px", position: "relative", zIndex: 2,
+            height: "calc(100vh - 130px)",
           }}>
-            {/* Left: Stage navigation */}
-            <div style={{ display: "flex", flexDirection: "column", gap: "4px", paddingRight: "48px" }}>
+            {/* Left: Accordion navigation */}
+            <div style={{
+              display: "flex", flexDirection: "column", gap: "3px",
+              paddingRight: "28px", overflowY: "auto",
+            }}>
               {stages.map((stage, i) => {
-                const isActive = displayStage === i;
+                const isActive = activeStage === i;
                 return (
-                  <button
-                    key={stage.id}
-                    onClick={() => setActiveStage(i)}
-                    onMouseEnter={() => setHoveredStage(i)}
-                    onMouseLeave={() => setHoveredStage(null)}
-                    style={{
-                      display: "flex", alignItems: "center", gap: "16px",
-                      padding: "16px 20px",
-                      background: isActive ? `${stage.color}0A` : "transparent",
-                      border: "1px solid",
-                      borderColor: isActive ? `${stage.color}30` : "transparent",
-                      borderRadius: "12px", cursor: "pointer", textAlign: "left",
-                      transition: "all 0.3s ease",
-                      opacity: mounted ? 1 : 0,
-                      transform: mounted ? "translateX(0)" : "translateX(-30px)",
-                      transitionDelay: `${i * 80}ms`,
-                      position: "relative", overflow: "hidden",
-                    }}
-                  >
-                    {isActive && (
+                  <div key={stage.id} style={{
+                    borderRadius: "10px",
+                    overflow: "hidden",
+                    transition: "all 0.3s ease",
+                    background: isActive ? `${stage.color}08` : "transparent",
+                    border: "1px solid",
+                    borderColor: isActive ? `${stage.color}25` : "transparent",
+                    opacity: mounted ? 1 : 0,
+                    transform: mounted ? "translateX(0)" : "translateX(-30px)",
+                    transition: `all 0.3s ease, opacity 0.6s ease ${i * 80}ms, transform 0.6s ease ${i * 80}ms`,
+                  }}>
+                    {/* Stage header — always visible */}
+                    <button
+                      onClick={() => toggleStage(i)}
+                      style={{
+                        width: "100%", display: "flex", alignItems: "center", gap: "12px",
+                        padding: "12px 14px",
+                        background: "none", border: "none", cursor: "pointer", textAlign: "left",
+                        position: "relative",
+                      }}
+                    >
+                      {isActive && (
+                        <div style={{
+                          position: "absolute", left: 0, top: 0, bottom: 0,
+                          width: "3px", background: stage.color, borderRadius: "0 2px 2px 0",
+                        }} />
+                      )}
                       <div style={{
-                        position: "absolute", left: 0, top: 0, bottom: 0,
-                        width: "3px", background: stage.color, borderRadius: "0 2px 2px 0",
-                      }} />
-                    )}
-                    <div style={{
-                      width: "40px", height: "40px", display: "flex",
-                      alignItems: "center", justifyContent: "center", fontSize: "18px",
-                      color: isActive ? stage.color : "#444",
-                      background: isActive ? `${stage.color}15` : "#141419",
-                      borderRadius: "10px", transition: "all 0.3s ease", flexShrink: 0,
-                      border: `1px solid ${isActive ? stage.color + "30" : "#1E1E26"}`,
-                    }}>
-                      {stage.icon}
-                    </div>
-                    <div style={{ flex: 1, minWidth: 0 }}>
-                      <div style={{ display: "flex", alignItems: "baseline", gap: "10px" }}>
-                        <span style={{
-                          fontSize: "10px", color: isActive ? stage.color : "#444",
-                          fontWeight: 600, letterSpacing: "2px", transition: "color 0.3s ease",
-                        }}>
-                          STAGE {stage.id}
-                        </span>
-                        <span style={{
-                          fontSize: "10px", color: "#333",
+                        width: "34px", height: "34px", display: "flex",
+                        alignItems: "center", justifyContent: "center", fontSize: "15px",
+                        color: isActive ? stage.color : "#444",
+                        background: isActive ? `${stage.color}15` : "#141419",
+                        borderRadius: "8px", transition: "all 0.3s ease", flexShrink: 0,
+                        border: `1px solid ${isActive ? stage.color + "30" : "#1E1E26"}`,
+                      }}>
+                        {stage.icon}
+                      </div>
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ display: "flex", alignItems: "baseline", gap: "8px" }}>
+                          <span style={{
+                            fontSize: "9px", color: isActive ? stage.color : "#444",
+                            fontWeight: 600, letterSpacing: "2px", transition: "color 0.3s ease",
+                          }}>
+                            LEVEL {stage.id}
+                          </span>
+                          <span style={{
+                            fontSize: "9px", color: "#333",
+                            fontFamily: "'DM Sans', system-ui, sans-serif",
+                          }}>
+                            {stage.duration}
+                          </span>
+                        </div>
+                        <div style={{
+                          fontSize: "14px", fontWeight: 600,
+                          color: isActive ? "#E8E6E3" : "#666",
+                          transition: "color 0.3s ease",
                           fontFamily: "'DM Sans', system-ui, sans-serif",
                         }}>
-                          {stage.duration}
-                        </span>
+                          {stage.title}
+                        </div>
                       </div>
-                      <div style={{
-                        fontSize: "16px", fontWeight: 600,
-                        color: isActive ? "#E8E6E3" : "#666",
-                        transition: "color 0.3s ease",
-                        fontFamily: "'DM Sans', system-ui, sans-serif",
-                      }}>
-                        {stage.title}
-                      </div>
-                      <div style={{
-                        fontSize: "12px", color: isActive ? "#888" : "#444",
-                        transition: "color 0.3s ease",
-                        fontFamily: "'DM Sans', system-ui, sans-serif",
-                      }}>
-                        {stage.subtitle}
-                      </div>
-                    </div>
-                  </button>
+                    </button>
+                  </div>
                 );
               })}
 
+              {/* Essential Commands toggle */}
               <button
-                onClick={() => setShowCommands(!showCommands)}
+                onClick={() => { setShowCommands(!showCommands); if (!showCommands) setActiveStage(null); }}
                 style={{
-                  marginTop: "12px", padding: "12px 20px",
+                  marginTop: "8px", padding: "10px 14px",
                   background: showCommands ? "#141419" : "transparent",
                   border: "1px solid",
                   borderColor: showCommands ? "#2A2A35" : "#1A1A22",
                   borderRadius: "10px", cursor: "pointer",
                   display: "flex", alignItems: "center", gap: "10px",
-                  color: showCommands ? "#E8E6E3" : "#555",
+                  color: showCommands ? "#E8E6E3" : "#444",
                   fontSize: "12px", fontFamily: "'DM Sans', system-ui, sans-serif",
                   transition: "all 0.3s ease",
                   opacity: mounted ? 1 : 0, transitionDelay: "500ms",
                 }}
               >
-                <span style={{ fontSize: "14px" }}>⌘</span>
-                <span style={{ fontWeight: 500 }}>
-                  {showCommands ? "Hide" : "Show"} Essential Commands
+                <span style={{ fontSize: "13px" }}>⌘</span>
+                <span style={{ fontWeight: 500 }}>Essential Commands</span>
+                <span style={{
+                  fontSize: "11px", color: "#333", marginLeft: "auto",
+                  transform: showCommands ? "rotate(90deg)" : "rotate(0)",
+                  transition: "transform 0.3s ease",
+                }}>
+                  ▸
                 </span>
               </button>
             </div>
 
-            {/* Right: Detail panel */}
+            {/* Right: Guide panel */}
             <div style={{
-              paddingLeft: "48px", borderLeft: "1px solid #1A1A22",
-              display: "flex", flexDirection: "column", justifyContent: "center",
+              paddingLeft: "28px", borderLeft: "1px solid #1A1A22",
+              overflowY: "auto",
             }}>
-              {!showCommands ? (
-                <div key={displayStage} style={{ animation: "fadeSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1)" }}>
-                  <div style={{
-                    display: "inline-flex", alignItems: "center", gap: "8px",
-                    padding: "6px 14px", background: `${current.color}10`,
-                    borderRadius: "20px", marginBottom: "20px",
-                    border: `1px solid ${current.color}20`,
-                  }}>
-                    <span style={{ fontSize: "14px" }}>{current.icon}</span>
-                    <span style={{
-                      fontSize: "11px", letterSpacing: "2px", textTransform: "uppercase",
-                      color: current.color, fontWeight: 600,
-                    }}>
-                      Stage {current.id} · {current.duration}
-                    </span>
-                  </div>
-
-                  <h2 style={{
-                    fontSize: "clamp(28px, 3.5vw, 40px)", fontWeight: 700,
-                    margin: "0 0 4px", color: "#E8E6E3", letterSpacing: "-1px",
-                    fontFamily: "'DM Sans', system-ui, sans-serif",
-                  }}>
-                    {current.title}
-                  </h2>
-                  <p style={{
-                    fontSize: "15px", color: "#666", margin: "0 0 32px",
-                    fontFamily: "'DM Sans', system-ui, sans-serif",
-                  }}>
-                    {current.subtitle}
-                  </p>
-
-                  <div style={{ display: "flex", flexDirection: "column", gap: "14px" }}>
-                    {current.items.map((item, i) => (
-                      <div key={i} style={{
-                        display: "flex", alignItems: "flex-start", gap: "14px",
-                        padding: "14px 16px", background: "#0E0E14",
-                        borderRadius: "10px", border: "1px solid #1A1A22",
-                        animation: "fadeSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
-                        animationDelay: `${i * 60}ms`, animationFillMode: "both",
-                      }}>
-                        <div style={{
-                          width: "6px", height: "6px", borderRadius: "50%",
-                          background: current.color, marginTop: "7px",
-                          flexShrink: 0, opacity: 0.7,
-                        }} />
-                        <span style={{
-                          fontSize: "13.5px", lineHeight: 1.5, color: "#C0BDB8",
-                          fontFamily: "'DM Sans', system-ui, sans-serif",
-                        }}>
-                          {item}
-                        </span>
-                      </div>
-                    ))}
-                  </div>
-
-                  <div style={{
-                    marginTop: "28px", padding: "14px 18px",
-                    background: `${current.darkColor}40`, borderRadius: "10px",
-                    border: `1px solid ${current.color}15`,
-                    display: "flex", alignItems: "center", gap: "10px",
-                  }}>
-                    <span style={{ fontSize: "13px", opacity: 0.5 }}>→</span>
-                    <a
-                      href={`https://${current.keyResource}`}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        fontSize: "12px", color: current.color, opacity: 0.8,
-                        fontFamily: "'JetBrains Mono', monospace",
-                        letterSpacing: "0.3px", textDecoration: "none",
-                      }}
-                    >
-                      {current.keyResource}
-                    </a>
-                  </div>
-                </div>
-              ) : (
+              {showCommands ? (
+                /* Essential Commands panel */
                 <div style={{ animation: "fadeSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1)" }}>
                   <h3 style={{
-                    fontSize: "20px", fontWeight: 600, margin: "0 0 24px",
+                    fontSize: "20px", fontWeight: 600, margin: "0 0 6px",
                     fontFamily: "'DM Sans', system-ui, sans-serif",
                     color: "#E8E6E3", letterSpacing: "-0.5px",
                   }}>
                     Essential Commands
                   </h3>
+                  <p style={{
+                    fontSize: "13px", color: "#555", margin: "0 0 24px",
+                    fontFamily: "'DM Sans', system-ui, sans-serif", lineHeight: 1.5,
+                  }}>
+                    The commands and shortcuts you'll use every session.
+                  </p>
                   <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px" }}>
                     {essentialCommands.map((cmd, i) => (
                       <div key={i} style={{
@@ -372,17 +492,15 @@
                         animation: "fadeSlide 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
                         animationDelay: `${i * 40}ms`, animationFillMode: "both",
                       }}>
-                        <div style={{ display: "flex", alignItems: "center", gap: "8px", marginBottom: "6px" }}>
-                          <code style={{
-                            fontSize: "13px", fontWeight: 600,
-                            color: cmd.type === "slash" ? "#5CC8FF" : "#FFD166",
-                            fontFamily: "'JetBrains Mono', monospace",
-                          }}>
-                            {cmd.cmd}
-                          </code>
-                        </div>
+                        <code style={{
+                          fontSize: "13px", fontWeight: 600,
+                          color: cmd.type === "slash" ? "#5CC8FF" : "#FFD166",
+                          fontFamily: "'JetBrains Mono', monospace",
+                        }}>
+                          {cmd.cmd}
+                        </code>
                         <div style={{
-                          fontSize: "12px", color: "#666",
+                          fontSize: "12px", color: "#666", marginTop: "6px",
                           fontFamily: "'DM Sans', system-ui, sans-serif",
                         }}>
                           {cmd.desc}
@@ -391,7 +509,7 @@
                     ))}
                   </div>
                   <div style={{
-                    marginTop: "20px", display: "flex", gap: "20px",
+                    marginTop: "16px", display: "flex", gap: "20px",
                     fontSize: "11px", color: "#444",
                     fontFamily: "'DM Sans', system-ui, sans-serif",
                   }}>
@@ -399,19 +517,292 @@
                     <span><span style={{ color: "#FFD166", marginRight: "6px" }}>●</span> Keyboard shortcuts</span>
                   </div>
                 </div>
+              ) : current ? (
+                /* Stage guide content */
+                <div key={activeStage} style={{ animation: "fadeSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1)" }}>
+                  {/* Title */}
+                  <h2 style={{
+                    fontSize: "clamp(24px, 3vw, 34px)", fontWeight: 700,
+                    margin: "0 0 4px", color: "#E8E6E3", letterSpacing: "-1px",
+                    fontFamily: "'DM Sans', system-ui, sans-serif",
+                  }}>
+                    {current.title}
+                  </h2>
+                  <div style={{
+                    display: "inline-flex", alignItems: "center", gap: "8px",
+                    padding: "4px 10px", background: `${current.color}10`,
+                    borderRadius: "20px", marginBottom: "6px",
+                    border: `1px solid ${current.color}20`,
+                  }}>
+                    <span style={{ fontSize: "12px" }}>{current.icon}</span>
+                    <span style={{
+                      fontSize: "10px", letterSpacing: "1px",
+                      color: current.color, fontWeight: 600,
+                    }}>
+                      {current.duration}
+                    </span>
+                  </div>
+                  {/* Key concepts */}
+                  <div style={{ marginTop: "24px", marginBottom: current.overview ? "8px" : "28px" }}>
+                    <h3 style={{
+                      fontSize: "10px", letterSpacing: "2px",
+                      textTransform: "uppercase", color: current.color, opacity: 0.6,
+                      marginBottom: "12px",
+                    }}>
+                      Key concepts
+                    </h3>
+                    {current.items.length > 0 && (
+                      <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                        {current.items.map((item, j) => (
+                          <div key={j} style={{
+                            display: "flex", alignItems: "flex-start", gap: "10px",
+                            padding: "8px 14px", background: "#0E0E14",
+                            borderRadius: "8px", border: "1px solid #1A1A22",
+                            animation: "fadeSlide 0.3s cubic-bezier(0.16, 1, 0.3, 1)",
+                            animationDelay: `${j * 40}ms`, animationFillMode: "both",
+                          }}>
+                            <div style={{
+                              width: "5px", height: "5px", borderRadius: "50%",
+                              background: current.color, marginTop: "6px",
+                              flexShrink: 0, opacity: 0.5,
+                            }} />
+                            <span style={{
+                              fontSize: "12.5px", lineHeight: 1.5, color: "#999",
+                              fontFamily: "'DM Sans', system-ui, sans-serif",
+                            }}>
+                              {item}
+                            </span>
+                          </div>
+                        ))}
+                      </div>
+                    )}
+                    {current.items.length > 0 && (
+                      <a
+                        href={`https://${current.keyResource}`}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{
+                          display: "inline-flex", alignItems: "center", gap: "8px",
+                          marginTop: "12px", fontSize: "11px",
+                          color: current.color, opacity: 0.6,
+                          textDecoration: "none",
+                          fontFamily: "'JetBrains Mono', monospace",
+                        }}
+                      >
+                        <span>→</span> {current.keyResource}
+                      </a>
+                    )}
+                  </div>
+
+                  {/* Overview cards (Level 1 only) */}
+                  {current.overview && (
+                    <div style={{ margin: "16px 0 20px", display: "flex", flexDirection: "column", gap: "8px" }}>
+                      {current.overview.map((item, j) => (
+                        <div key={j} className="overview-card" style={{
+                          background: "#0E0E14",
+                          borderRadius: "10px", border: "1px solid #1A1A22",
+                          animation: "fadeSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+                          animationDelay: `${j * 60}ms`, animationFillMode: "both",
+                          overflow: "hidden",
+                        }}>
+                          <button
+                            onClick={() => setExpandedOverview(expandedOverview === j ? null : j)}
+                            style={{
+                              width: "100%", display: "flex", alignItems: "center", gap: "10px",
+                              padding: "12px 16px",
+                              background: "none", border: "none", cursor: "pointer", textAlign: "left",
+                            }}
+                          >
+                            <div style={{
+                              width: "5px", height: "5px", borderRadius: "50%",
+                              background: current.color, flexShrink: 0, opacity: 0.5,
+                            }} />
+                            <span style={{
+                              fontSize: "12.5px", fontWeight: 600, color: "#999",
+                              fontFamily: "'DM Sans', system-ui, sans-serif",
+                              flex: 1,
+                            }}>
+                              {item.title}
+                            </span>
+                            <span style={{
+                              fontSize: "11px", color: current.color,
+                              transition: "transform 0.3s ease",
+                              transform: expandedOverview === j ? "rotate(90deg)" : "rotate(0)",
+                              flexShrink: 0, opacity: 0.4,
+                            }}>
+                              ▸
+                            </span>
+                          </button>
+                          <Collapsible isOpen={expandedOverview === j}>
+                            <div style={{ padding: "0 16px 14px 31px" }}>
+                              <p style={{
+                                fontSize: "13px", lineHeight: 1.6, color: "#888",
+                                fontFamily: "'DM Sans', system-ui, sans-serif",
+                                margin: 0,
+                              }}
+                                dangerouslySetInnerHTML={{ __html: item.content }}
+                              />
+                            </div>
+                          </Collapsible>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  <p style={{
+                    fontSize: "13px", color: "#555", margin: "0 0 20px",
+                    fontFamily: "'DM Sans', system-ui, sans-serif",
+                  }}>
+                    {current.subtitle}
+                  </p>
+
+                  {/* Description */}
+                  <p style={{
+                    fontSize: "14px", color: "#999", lineHeight: 1.65,
+                    fontFamily: "'DM Sans', system-ui, sans-serif",
+                    marginBottom: "24px", maxWidth: "600px",
+                  }}>
+                    {current.guide.description}
+                  </p>
+
+                  {/* Steps */}
+                  <div style={{ marginBottom: "28px" }}>
+                    <h3 style={{
+                      fontSize: "10px", letterSpacing: "2px",
+                      textTransform: "uppercase", color: "#555",
+                      marginBottom: "12px",
+                    }}>
+                      What to do
+                    </h3>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                      {current.guide.steps.map((step, j) => (
+                        <div key={j} style={{
+                          display: "flex", alignItems: "flex-start", gap: "12px",
+                          padding: "10px 14px", background: "#0E0E14",
+                          borderRadius: "8px", border: "1px solid #1A1A22",
+                          animation: "fadeSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+                          animationDelay: `${j * 50}ms`, animationFillMode: "both",
+                        }}>
+                          <span style={{
+                            fontSize: "11px", color: current.color,
+                            fontWeight: 600, opacity: 0.5,
+                            marginTop: "2px", flexShrink: 0,
+                            fontFamily: "'JetBrains Mono', monospace",
+                          }}>
+                            {j + 1}.
+                          </span>
+                          <span style={{
+                            fontSize: "13px", lineHeight: 1.5, color: "#C0BDB8",
+                            fontFamily: "'DM Sans', system-ui, sans-serif",
+                          }}>
+                            {step}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Pitfalls */}
+                  <div style={{ marginBottom: "28px" }}>
+                    <h3 style={{
+                      fontSize: "10px", letterSpacing: "2px",
+                      textTransform: "uppercase", color: "#EF476F",
+                      marginBottom: "12px", opacity: 0.7,
+                    }}>
+                      Common pitfalls
+                    </h3>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "6px" }}>
+                      {current.guide.pitfalls.map((pitfall, j) => (
+                        <div key={j} style={{
+                          display: "flex", alignItems: "flex-start", gap: "12px",
+                          padding: "10px 14px", background: "#14080A",
+                          borderRadius: "8px", border: "1px solid #2A1215",
+                          animation: "fadeSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+                          animationDelay: `${(current.guide.steps.length + j) * 50}ms`,
+                          animationFillMode: "both",
+                        }}>
+                          <span style={{
+                            fontSize: "11px", color: "#EF476F",
+                            opacity: 0.5, marginTop: "2px", flexShrink: 0,
+                          }}>
+                            ⚠
+                          </span>
+                          <span style={{
+                            fontSize: "13px", lineHeight: 1.5, color: "#998",
+                            fontFamily: "'DM Sans', system-ui, sans-serif",
+                          }}>
+                            {pitfall}
+                          </span>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Checkpoint */}
+                  <div style={{
+                    padding: "16px 18px", background: `${current.darkColor}40`,
+                    borderRadius: "10px", border: `1px solid ${current.color}15`,
+                  }}>
+                    <h3 style={{
+                      fontSize: "10px", letterSpacing: "2px",
+                      textTransform: "uppercase", color: current.color,
+                      marginBottom: "10px", opacity: 0.6,
+                    }}>
+                      Checkpoint
+                    </h3>
+                    <p style={{
+                      fontSize: "13px", lineHeight: 1.6, color: "#999",
+                      fontFamily: "'DM Sans', system-ui, sans-serif",
+                      margin: 0,
+                    }}>
+                      {current.guide.checkpoint}
+                    </p>
+                  </div>
+                </div>
+              ) : (
+                /* No stage selected */
+                <div style={{
+                  display: "flex", flexDirection: "column",
+                  justifyContent: "center", height: "100%",
+                  animation: "fadeSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1)",
+                }}>
+                  <div style={{
+                    fontSize: "11px", letterSpacing: "3px", textTransform: "uppercase",
+                    color: "#333", marginBottom: "12px",
+                  }}>
+                    Getting Started
+                  </div>
+                  <h2 style={{
+                    fontSize: "24px", fontWeight: 700, color: "#555",
+                    fontFamily: "'DM Sans', system-ui, sans-serif",
+                    letterSpacing: "-0.5px", margin: "0 0 12px",
+                  }}>
+                    Select a level to begin
+                  </h2>
+                  <p style={{
+                    fontSize: "14px", color: "#444", lineHeight: 1.6,
+                    fontFamily: "'DM Sans', system-ui, sans-serif",
+                    maxWidth: "400px",
+                  }}>
+                    Each level builds on the previous one. Start with Level 1 to understand the fundamentals,
+                    then progress through installation, daily workflows, integrations, automation, and mastery.
+                  </p>
+                </div>
               )}
             </div>
           </div>
 
-          {/* Bottom bar */}
+          {/* Bottom progress bar */}
           <div style={{
             position: "fixed", bottom: 0, left: 0, right: 0,
             height: "3px", background: "#0E0E14", zIndex: 10,
           }}>
             <div style={{
               height: "100%",
-              width: `${((displayStage + 1) / stages.length) * 100}%`,
-              background: `linear-gradient(90deg, ${current.color}80, ${current.color})`,
+              width: activeStage !== null ? `${((activeStage + 1) / stages.length) * 100}%` : "0%",
+              background: current
+                ? `linear-gradient(90deg, ${current.color}80, ${current.color})`
+                : "#333",
               transition: "all 0.5s cubic-bezier(0.16, 1, 0.3, 1)",
               borderRadius: "0 2px 2px 0",
             }} />
