@@ -78,9 +78,9 @@
           },
         ],
         items: [],
-        keyResource: "code.claude.com/docs/en/overview",
         guide: {
-          description: "",
+          description: "Meet the AI you'll be working with. This level covers what Claude is, how to talk to it effectively, and the core concepts that make everything else in this course click.",
+          references: [],
           steps: [
             {
               title: 'Go to <a href="https://claude.ai" target="_blank" rel="noopener noreferrer" style="color: #6FFFE9; opacity: 0.8;">claude.ai</a> and create a free account (or sign in if you have one)',
@@ -133,35 +133,84 @@
         },
       },
       {
-        id: 2, title: "Install", subtitle: "Setup & First Session",
-        color: "#5CC8FF", darkColor: "#0D3B66", icon: "⬡", duration: "~30 min",
-        items: [
-          "Native installer (no Node.js required)",
-          "OAuth or API key authentication",
-          "Run claude → /init → /help",
-          "Understand Pro vs Max vs API billing",
+        id: 2, title: "Setup", subtitle: "",
+        color: "#5CC8FF", darkColor: "#0D3B66", icon: "⬡", duration: "~1 hour",
+        overview: [
+          {
+            title: "Subscriptions",
+            content: 'Claude offers different <a href="https://www.anthropic.com/pricing" target="_blank" rel="noopener noreferrer" style="color: #5CC8FF; opacity: 0.8;">subscription tiers</a>, and understanding them helps you get the most from the tool.<br/><br/><b>Free</b> — access to Claude with daily usage limits. Enough to explore and learn, but you\'ll hit caps during heavy use.<br/><b>Pro</b> — significantly higher limits, priority access during peak times, and access to all model tiers including Opus. This is where most regular users land.<br/><b>Max</b> — everything in Pro with substantially higher usage limits. Built for heavy, all-day usage.<br/><b>Team</b> — everything in Pro, plus collaboration features, shared Projects, and admin controls.<br/><br/>The model tiers you learned about in Level 1 (Haiku, Sonnet, Opus) are available across plans, but <b>Pro unlocks more Opus usage</b> — which matters for complex, nuanced work.<br/><br/><b>Practical tip:</b> start with Free to build your habits. Upgrade to Pro when you find yourself hitting limits or wanting Opus for deeper analysis. You\'ll know you need it when Claude becomes part of your daily workflow.<br/><br/>Whichever tier you choose, the next step is getting Claude off the browser and onto your <b>desktop</b>.',
+          },
+          {
+            title: "The Desktop App",
+            content: 'In Level 1, you used Claude through a browser tab. The <a href="https://claude.ai/download" target="_blank" rel="noopener noreferrer" style="color: #5CC8FF; opacity: 0.8;">desktop app</a> puts Claude on your computer as a standalone application — always a keyboard shortcut away, no browser needed.<br/><br/>Why does that matter? It changes Claude from a <b>website you visit</b> into a <b>tool you reach for</b>. Need to draft an email? ⌘-Space, type, done. Need to summarize a document? Drag it in. The friction drops from "open browser → find tab → start typing" to just <b>start typing</b>.<br/><br/>Everything you learned in Level 1 — prompting, context, iteration — works exactly the same here. The desktop app is the same Claude, just closer at hand. But the real power isn\'t the app itself — it\'s how you <b>organize your work</b> inside it.',
+          },
+          {
+            title: "Projects",
+            content: 'In Level 1, you created a Project to see how persistent instructions work. Now it\'s time to use them for real.<br/><br/>A <a href="https://support.anthropic.com/en/articles/9517075-what-are-projects" target="_blank" rel="noopener noreferrer" style="color: #5CC8FF; opacity: 0.8;">Project</a> is a workspace with its own instructions and reference files. Every conversation inside a Project inherits that context automatically — no copy-pasting, no re-explaining. Think of it like setting up a desk for a specific job: the right tools, references, and notes are already laid out.<br/><br/>The key insight: <b>different work deserves different Projects</b>. A "Weekly Reports" Project knows your format, audience, and tone. A "Research" Project knows your field and citation preferences. A "Learning" Project knows your level and what you\'ve covered.<br/><br/>Project instructions are your most powerful tool. They\'re not just preferences — they shape how Claude thinks about every response. A well-written instruction like "Always present trade-offs, not just recommendations" fundamentally changes the quality of what you get back.<br/><br/>With your work organized, the next question is: what can Claude actually <b>create</b> for you?',
+          },
+          {
+            title: "Artifacts",
+            content: 'When Claude writes something substantial — a document, a table, a diagram, a piece of code — it can create an <a href="https://support.anthropic.com/en/articles/9487310-what-are-artifacts-and-how-do-i-use-them" target="_blank" rel="noopener noreferrer" style="color: #5CC8FF; opacity: 0.8;">Artifact</a>: a standalone piece of content that lives outside the conversation. Instead of text buried in a chat thread, you get something you can <b>view</b>, <b>edit</b>, and <b>export</b>.<br/><br/>Artifacts can be:<br/><b>Documents</b> — reports, essays, emails, proposals<br/><b>Tables</b> — structured data, comparisons, schedules<br/><b>Code</b> — scripts, HTML pages, working applications<br/><b>Diagrams</b> — flowcharts, org charts, process maps<br/><b>Visualizations</b> — charts and graphs from your data<br/><br/>The key shift: instead of asking Claude to <b>describe</b> something, ask it to <b>build</b> it. "Create a comparison table" beats "list the differences." "Build a flowchart" beats "describe the process."<br/><br/>You can iterate on Artifacts just like conversations — "add a column for cost" or "make the flowchart horizontal." Each version is saved, so you can always go back.',
+          },
         ],
-        keyResource: "code.claude.com/docs/en/setup",
+        items: [],
         guide: {
-          description: "Install Claude Code and run your first interactive session. By the end, you'll have a working installation, authenticated access, and an initialized project with a generated CLAUDE.md file.",
+          description: "You've learned to talk to Claude. Now let's set up your workspace — install the desktop app, organize your work with Projects, and start creating real output with Artifacts.",
+          references: [],
           steps: [
-            "Install Claude Code using the native installer — no Node.js or package manager required",
-            "Authenticate with OAuth (recommended for Pro/Max) or an API key",
-            "Navigate to a project directory and run `claude` to start your first session",
-            "Run `/init` to generate an initial CLAUDE.md file for your project",
-            "Run `/help` to see available commands and keyboard shortcuts",
-            "Check `/cost` to understand your current billing tier and usage",
+            "Download the Claude desktop app and sign in with your existing account",
+            "Create a Project — add custom instructions and upload reference files",
+            "Ask Claude to create an Artifact — a document, spreadsheet, or visualization",
+            "Learn the essential keyboard shortcuts: ⌘N (new chat), ⌘K (search), ⌘/ (shortcuts)",
+            "Organize your work — use Projects for different topics, star important conversations",
+            "Explore your subscription — understand Free vs Pro tier limits and what each unlocks",
           ],
           pitfalls: [
-            "Installing via npm instead of the native installer can cause permission and PATH issues",
-            "Not running `/init` means Claude has no project context — it will ask basic questions every session",
-            "Forgetting to check `/cost` early can lead to unexpected bills on API billing",
+            "Skipping Projects — without them, you repeat the same context every conversation",
+            "Ignoring Artifacts — copying text from the chat instead of asking Claude to create a structured document you can edit and export",
+            "One giant conversation — long chats degrade quality. Start fresh conversations for new topics and use Projects for continuity",
           ],
-          checkpoint: "Claude Code launches, you've authenticated, and `/init` has generated a CLAUDE.md. You understand whether you're on Pro, Max, or API billing.",
+          checkpoint: "You're ready for Level 3 when you have the desktop app running, use Projects to organize your work, and regularly use Artifacts to create structured output.",
         },
       },
       {
-        id: 3, title: "Command", subtitle: "Daily Workflows",
+        id: 3, title: "CoWork", subtitle: "",
+        color: "#82AAFF", darkColor: "#1A2A5C", icon: "◎", duration: "~1 hour",
+        overview: [
+          {
+            title: "What Is CoWork?",
+            content: 'In Levels 1 and 2, you\'ve been having <b>conversations</b> with Claude — you ask, Claude responds, you refine. CoWork flips this dynamic. Instead of a back-and-forth chat, Claude works <b>alongside you</b> in real time.<br/><br/>Think of it as the difference between texting a colleague and sitting next to them. In CoWork mode, Claude can see what you\'re working on, take initiative, and work on tasks in the background while you focus on other things. You\'re not directing every step — you\'re <b>collaborating</b>.<br/><br/>This is your first taste of <b>agentic AI</b> in practice. Claude isn\'t just answering questions anymore — it\'s actively helping you get work done.',
+          },
+          {
+            title: "Chat vs. CoWork",
+            content: '<b>Chat</b> is what you\'ve been doing — a conversation thread where you prompt and Claude responds. It\'s great for questions, drafting, brainstorming, and one-off tasks. You control the pace and direction.<br/><br/><b>CoWork</b> is a shared workspace where Claude can work on longer tasks independently. You set the goal, Claude works on it, and you check in on progress. It can research, draft documents, analyze data, and iterate — all while you do other things.<br/><br/>The key difference: in Chat, Claude waits for you. In CoWork, Claude <b>keeps going</b>.<br/><br/>They\'re not competing modes — they complement each other. Use Chat for quick interactions, CoWork for deeper work.',
+          },
+          {
+            title: "Working With CoWork",
+            content: 'CoWork is most powerful when you give Claude a <b>clear goal</b> and let it work. Instead of micromanaging each step, describe the outcome you want:<br/><br/>"Research the top 5 project management tools and create a comparison table with pricing, key features, and pros/cons."<br/><br/>"Draft a 1,000-word blog post about remote work trends based on the articles I\'ve uploaded."<br/><br/>Claude will break the work into steps, execute them, and present results. You can check in, redirect, or refine along the way — but you don\'t have to hover.<br/><br/><b>Practical tip:</b> start with tasks you\'d normally spend 20-30 minutes on. This gives Claude enough room to work while keeping the stakes low as you learn the rhythm of collaborating.',
+          },
+        ],
+        items: [],
+        guide: {
+          description: "Step beyond conversations into real collaboration. CoWork lets Claude work alongside you — tackling tasks independently while you focus on what matters.",
+          references: [],
+          steps: [
+            "Open CoWork mode from the desktop app and start your first collaborative session",
+            "Give Claude a research task — a topic to investigate and summarize with sources",
+            "Ask Claude to create a structured deliverable — a report, analysis, or plan",
+            "Practice checking in on progress and redirecting Claude mid-task",
+            "Try running a CoWork session while you work on something else — experience the async workflow",
+          ],
+          pitfalls: [
+            "Being too vague — 'help me with my project' gives Claude nothing to work with. Define the deliverable.",
+            "Micromanaging — the whole point is letting Claude work independently. Give it room.",
+            "Forgetting to review — Claude works fast but isn't perfect. Always review the output before using it.",
+          ],
+          checkpoint: "You're ready for Level 4 when you can delegate a meaningful task to CoWork, check in on progress, and refine the output into something you'd actually use.",
+        },
+      },
+      {
+        id: 4, title: "Command", subtitle: "CLI Daily Workflows",
         color: "#BB86FC", darkColor: "#3C1A6E", icon: "⬢", duration: "~1 week",
         items: [
           "Slash commands: /compact, /clear, /model, /cost",
@@ -169,9 +218,11 @@
           "CLAUDE.md — your highest-leverage tool",
           "Permission modes: default, acceptEdits, plan",
         ],
-        keyResource: "code.claude.com/docs/en/best-practices",
         guide: {
           description: "Build the muscle memory and mental models for productive daily use. CLAUDE.md is your highest-leverage tool — a well-crafted one transforms every interaction. Permission modes control how much autonomy Claude has.",
+          references: [
+            { title: "Claude Code Best Practices", url: "https://docs.anthropic.com/en/docs/claude-code/best-practices" },
+          ],
           steps: [
             "Master essential slash commands: /compact (compress context), /clear (reset), /model (switch), /cost (check spend)",
             "Practice keyboard shortcuts until automatic: Shift+Tab (cycle permissions), Esc Esc (rewind), # (memory), @ (file autocomplete)",
@@ -188,7 +239,7 @@
         },
       },
       {
-        id: 4, title: "Integrate", subtitle: "MCP & Configuration",
+        id: 5, title: "Integrate", subtitle: "MCP & Configuration",
         color: "#EF476F", darkColor: "#5C1A2A", icon: "◇", duration: "~2 weeks",
         items: [
           "MCP: connect GitHub, Sentry, Notion, databases",
@@ -196,9 +247,11 @@
           "Context management: /context, /compact, subagents",
           "Team config via .claude/settings.json & .mcp.json",
         ],
-        keyResource: "code.claude.com/docs/en/mcp",
         guide: {
           description: "Connect Claude Code to your development ecosystem. MCP (Model Context Protocol) servers let Claude read GitHub issues, query databases, access Notion docs, and more — all within the conversation. This is where Claude stops being a code editor and becomes a development partner.",
+          references: [
+            { title: "Model Context Protocol Specification", url: "https://modelcontextprotocol.io/" },
+          ],
           steps: [
             "Configure your first MCP server: start with GitHub to read issues and create PRs",
             "Add a database MCP server so Claude can query your app's data directly",
@@ -216,7 +269,7 @@
         },
       },
       {
-        id: 5, title: "Automate", subtitle: "Advanced Agentic Patterns",
+        id: 6, title: "Automate", subtitle: "Advanced Agentic Patterns",
         color: "#FFD166", darkColor: "#5C4813", icon: "◆", duration: "~1 month",
         items: [
           "Explore → Plan → Code → Commit workflow",
@@ -224,9 +277,9 @@
           "Custom skills in .claude/skills/",
           "Hooks: PreToolUse, PostToolUse, Stop events",
         ],
-        keyResource: "code.claude.com/docs/en/sub-agents",
         guide: {
           description: "Build sophisticated multi-step workflows. Subagents handle specialized tasks in isolated contexts. Hooks automate repetitive actions on every tool use. Skills codify your patterns so Claude applies them consistently.",
+          references: [],
           steps: [
             "Master the Explore → Plan → Code → Commit workflow for complex features",
             "Configure subagents for specialized roles: code reviewer, test writer, database analyst",
@@ -244,7 +297,7 @@
         },
       },
       {
-        id: 6, title: "Master", subtitle: "CI/CD & SDK",
+        id: 7, title: "Master", subtitle: "CI/CD & SDK",
         color: "#FF8C42", darkColor: "#5C2E0E", icon: "✦", duration: "Ongoing",
         items: [
           "GitHub Actions with claude-code-action@v1",
@@ -252,9 +305,11 @@
           "Agent SDK for TypeScript & Python",
           "Extended thinking & adaptive reasoning",
         ],
-        keyResource: "code.claude.com/docs/en/github-actions",
         guide: {
           description: "Scale Claude Code beyond your local machine. Run it in CI/CD to auto-review PRs, use headless mode for scripting and automation, and build custom agents with the SDK. This is where Claude Code becomes infrastructure.",
+          references: [
+            { title: "Claude Agent SDK", url: "https://docs.anthropic.com/en/docs/agents/overview" },
+          ],
           steps: [
             "Set up a GitHub Action using claude-code-action@v1 for automated PR reviews",
             "Learn headless mode: use the -p flag for non-interactive prompts and JSON output for scripting",
@@ -365,8 +420,8 @@
       const [completedSteps, setCompletedSteps] = useState({});
       const [expandedStep, setExpandedStep] = useState(null);
       const [expandedPitfall, setExpandedPitfall] = useState(null);
-      const [discoveryTitle, setDiscoveryTitle] = useState("");
-      const [isDiscoveryScrambling, setIsDiscoveryScrambling] = useState(false);
+      const [stageTitle, setStageTitle] = useState("");
+      const [isStageTitleScrambling, setIsStageTitleScrambling] = useState(false);
 
       useEffect(() => { setMounted(true); }, []);
       useEffect(() => {
@@ -395,16 +450,16 @@
       }, []);
 
       useEffect(() => {
-        if (activeStage !== 0) { setDiscoveryTitle(""); setIsDiscoveryScrambling(false); return; }
-        setDiscoveryTitle("");
+        if (activeStage === null) { setStageTitle(""); setIsStageTitleScrambling(false); return; }
+        const target = stages[activeStage].title;
+        setStageTitle("");
         let interval;
         const delay = setTimeout(() => {
-          setIsDiscoveryScrambling(true);
+          setIsStageTitleScrambling(true);
           let iteration = 0;
-          const target = "Discovery";
           const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz01234567890><{}[]|/\\*&@#";
           interval = setInterval(() => {
-            setDiscoveryTitle(
+            setStageTitle(
               target.split("").map((char, i) => {
                 if (iteration > i * 4 + 8) return char;
                 return chars[Math.floor(Math.random() * chars.length)];
@@ -413,8 +468,8 @@
             iteration++;
             if (iteration > target.length * 4 + 8) {
               clearInterval(interval);
-              setDiscoveryTitle(target);
-              setIsDiscoveryScrambling(false);
+              setStageTitle(target);
+              setIsStageTitleScrambling(false);
             }
           }, 50);
         }, 300);
@@ -664,8 +719,8 @@
                     fontFamily: "'JetBrains Mono', monospace",
                     minHeight: "1.2em",
                   }}>
-                    {activeStage === 0 ? discoveryTitle : current.title}
-                    {isDiscoveryScrambling && (
+                    {stageTitle}
+                    {isStageTitleScrambling && (
                       <span style={{
                         display: "inline-block", width: "2px", height: "0.8em",
                         background: current.color, marginLeft: "4px",
@@ -688,6 +743,16 @@
                       {current.duration}
                     </span>
                   </div>
+                  {/* Description */}
+                  {current.guide.description && (
+                    <p style={{
+                      fontSize: "14px", color: "#BBB", lineHeight: 1.65,
+                      fontFamily: "'JetBrains Mono', monospace",
+                      marginTop: "16px", marginBottom: "0",
+                    }}>
+                      {current.guide.description}
+                    </p>
+                  )}
                   {/* Key concepts */}
                   <div style={{ marginTop: "24px", marginBottom: current.overview ? "8px" : "28px" }}>
                     {(current.items.length > 0 || current.overview) && (
@@ -726,22 +791,6 @@
                           </div>
                         ))}
                       </div>
-                    )}
-                    {current.items.length > 0 && (
-                      <a
-                        href={`https://${current.keyResource}`}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        style={{
-                          display: "inline-flex", alignItems: "center", gap: "8px",
-                          marginTop: "12px", fontSize: "11px",
-                          color: current.color, opacity: 0.6,
-                          textDecoration: "none",
-                          fontFamily: "'JetBrains Mono', monospace",
-                        }}
-                      >
-                        <span>→</span> {current.keyResource}
-                      </a>
                     )}
                   </div>
 
@@ -863,16 +912,6 @@
                     </p>
                   )}
 
-                  {/* Description */}
-                  {current.guide.description && (
-                    <p style={{
-                      fontSize: "14px", color: "#BBB", lineHeight: 1.65,
-                      fontFamily: "'JetBrains Mono', monospace",
-                      marginBottom: "24px", maxWidth: "600px",
-                    }}>
-                      {current.guide.description}
-                    </p>
-                  )}
 
                   {/* Steps */}
                   <div style={{ marginBottom: "28px" }}>
@@ -1088,23 +1127,6 @@
                     }}>
                       {current.guide.checkpoint}
                     </p>
-                    <a
-                      href="https://platform.claude.com/docs/en/home"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{
-                        display: "inline-flex", alignItems: "center", gap: "6px",
-                        marginTop: "12px", fontSize: "12px",
-                        color: current.color, opacity: 0.5,
-                        textDecoration: "none",
-                        fontFamily: "'JetBrains Mono', monospace",
-                        transition: "opacity 0.2s ease",
-                      }}
-                      onMouseEnter={(e) => e.currentTarget.style.opacity = "0.8"}
-                      onMouseLeave={(e) => e.currentTarget.style.opacity = "0.5"}
-                    >
-                      <span>→</span> Explore the official docs
-                    </a>
                     {activeStage < stages.length - 1 && (
                       <div style={{ marginTop: "16px" }}>
                         <button
@@ -1134,6 +1156,40 @@
                       </div>
                     )}
                   </div>
+
+                  {/* Additional References */}
+                  {current.guide.references && current.guide.references.length > 0 && (
+                    <div style={{ marginTop: "20px" }}>
+                      <h3 style={{
+                        fontSize: "13px", letterSpacing: "2px",
+                        textTransform: "uppercase", color: current.color,
+                        marginBottom: "12px", opacity: 0.6,
+                      }}>
+                        Additional references
+                      </h3>
+                      <div style={{ display: "flex", flexDirection: "column", gap: "4px" }}>
+                        {current.guide.references.map((ref, j) => (
+                          <a
+                            key={j}
+                            href={ref.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            style={{
+                              display: "inline-flex", alignItems: "center", gap: "8px",
+                              fontSize: "11px", color: current.color, opacity: 0.6,
+                              textDecoration: "none",
+                              fontFamily: "'JetBrains Mono', monospace",
+                              transition: "opacity 0.2s ease",
+                            }}
+                            onMouseEnter={(e) => e.currentTarget.style.opacity = "0.9"}
+                            onMouseLeave={(e) => e.currentTarget.style.opacity = "0.6"}
+                          >
+                            <span>→</span> {ref.title}
+                          </a>
+                        ))}
+                      </div>
+                    </div>
+                  )}
                 </div>
               ) : (
                 /* No stage selected */
