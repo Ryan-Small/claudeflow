@@ -47,7 +47,7 @@
 
     const stages = [
       {
-        id: 1, title: "Discovery", subtitle: "",
+        id: 1, title: "Converse", subtitle: "",
         color: "#6FFFE9", darkColor: "#1B4332", icon: "◈", duration: "~1.5 hours",
         overview: [
           {
@@ -79,7 +79,7 @@
         ],
         items: [],
         guide: {
-          description: "Meet the AI you'll be working with. This level covers what Claude is, how to talk to it effectively, and the core concepts that make everything else in this course click.",
+          description: "Meet the AI you'll be working with. This level is all about conversation — learning what Claude is, how to talk to it effectively, and the core concepts that make everything else in this course click.",
           references: [],
           steps: [
             {
@@ -106,10 +106,6 @@
               title: "Use the Research feature to have Claude search the web and cite sources",
               detail: 'Toggle on the Research feature (look for the search icon or toggle in the input area). This lets Claude search the web and cite real sources.<br/><br/><b>Try this:</b><br/><code style="color: #6FFFE9; opacity: 0.7; font-size: 12px;">Research the current state of electric vehicle adoption worldwide. What are the leading markets, major manufacturers, and biggest barriers to adoption?</code><br/><br/>Check the citations Claude provides — click through to verify they\'re real and accurate. This builds the habit of <b>verifying output</b>, which is critical when working with any AI.',
             },
-            {
-              title: "Create a Project — give it instructions and upload a file, then ask questions about it",
-              detail: 'Click "Projects" in the sidebar to create a new one. Projects let you set persistent instructions and upload reference files that Claude remembers across conversations.<br/><br/><b>Try this setup:</b><br/>1. Create a project called "Learning Assistant"<br/>2. In the project instructions, write:<br/><code style="color: #6FFFE9; opacity: 0.7; font-size: 12px;">You are helping me learn new technical concepts. Always explain things simply first, then add complexity. Use analogies when possible. If I ask something you\'re not sure about, say so.</code><br/>3. Upload a document you\'re studying (a PDF, article, or notes)<br/>4. Start a conversation and ask questions about the uploaded content<br/><br/>Notice how Claude follows your instructions without you repeating them. This is <b>context</b> in action — persistent instructions keep information "on the desk" across conversations. It\'s a preview of how CLAUDE.md works in Claude Code.',
-            },
           ],
           pitfalls: [
             {
@@ -129,57 +125,57 @@
               detail: '<b>Search engine style:</b><br/><code style="color: #EF476F; opacity: 0.7; font-size: 12px;">best way to learn Spanish</code><br/><br/><b>Conversation style:</b><br/><code style="color: #6FFFE9; opacity: 0.7; font-size: 12px;">I want to learn conversational Spanish for a trip to Mexico in 3 months. I\'m a complete beginner with about 30 minutes a day to practice. What\'s a realistic study plan?</code><br/><br/>Claude excels when you give it the full picture. Keywords get you a generic list; context gets you a tailored answer.',
             },
           ],
-          checkpoint: "You're ready for Level 2 when you can have a productive back-and-forth conversation with Claude, know when to verify its output, and understand how context shapes its responses.",
+          checkpoint: "You're ready for Level 2 when you can have a productive back-and-forth conversation with Claude, iterate on responses to get what you need, and understand how context shapes its output.",
         },
       },
       {
-        id: 2, title: "Setup", subtitle: "",
-        color: "#5CC8FF", darkColor: "#0D3B66", icon: "⬡", duration: "~1 hour",
+        id: 2, title: "Create", subtitle: "",
+        color: "#5CC8FF", darkColor: "#0D3B66", icon: "⬡", duration: "~1.5 hours",
         overview: [
           {
-            title: "Subscriptions",
-            content: 'Claude offers different <a href="https://www.anthropic.com/pricing" target="_blank" rel="noopener noreferrer" style="color: #5CC8FF; opacity: 0.8;">subscription tiers</a>, and understanding them helps you get the most from the tool.<br/><br/><b>Free</b> — access to Claude with daily usage limits. Enough to explore and learn, but you\'ll hit caps during heavy use.<br/><b>Pro</b> — significantly higher limits, priority access during peak times, and access to all model tiers including Opus. This is where most regular users land.<br/><b>Max</b> — everything in Pro with substantially higher usage limits. Built for heavy, all-day usage.<br/><b>Team</b> — everything in Pro, plus collaboration features, shared Projects, and admin controls.<br/><br/>The model tiers you learned about in Level 1 (Haiku, Sonnet, Opus) are available across plans, but <b>Pro unlocks more Opus usage</b> — which matters for complex, nuanced work.<br/><br/><b>Practical tip:</b> start with Free to build your habits. Upgrade to Pro when you find yourself hitting limits or wanting Opus for deeper analysis. You\'ll know you need it when Claude becomes part of your daily workflow.<br/><br/>Whichever tier you choose, the next step is getting Claude off the browser and onto your <b>desktop</b>.',
-          },
-          {
-            title: "The Desktop App",
-            content: 'In Level 1, you used Claude through a browser tab. The <a href="https://claude.ai/download" target="_blank" rel="noopener noreferrer" style="color: #5CC8FF; opacity: 0.8;">desktop app</a> puts Claude on your computer as a standalone application — always a keyboard shortcut away, no browser needed.<br/><br/>Why does that matter? It changes Claude from a <b>website you visit</b> into a <b>tool you reach for</b>. Need to draft an email? ⌘-Space, type, done. Need to summarize a document? Drag it in. The friction drops from "open browser → find tab → start typing" to just <b>start typing</b>.<br/><br/>Everything you learned in Level 1 — prompting, context, iteration — works exactly the same here. The desktop app is the same Claude, just closer at hand. But the real power isn\'t the app itself — it\'s how you <b>organize your work</b> inside it.',
+            title: "Artifacts",
+            content: 'In Level 1, Claude gave you <b>answers</b>. Now it\'s time to make Claude give you <b>things</b>.<br/><br/>When Claude writes something substantial — a document, a table, a diagram, a piece of code — it can create an <a href="https://support.anthropic.com/en/articles/9487310-what-are-artifacts-and-how-do-i-use-them" target="_blank" rel="noopener noreferrer" style="color: #5CC8FF; opacity: 0.8;">Artifact</a>: a standalone piece of content that lives outside the conversation. Instead of text buried in a chat thread, you get something you can <b>view</b>, <b>edit</b>, and <b>export</b>.<br/><br/>Artifacts can be:<br/><b>Documents</b> — reports, essays, emails, proposals<br/><b>Tables</b> — structured data, comparisons, schedules<br/><b>Code</b> — scripts, HTML pages, working applications<br/><b>Diagrams</b> — flowcharts, org charts, process maps<br/><b>Visualizations</b> — charts and graphs from your data<br/><br/>The key shift: instead of asking Claude to <b>describe</b> something, ask it to <b>build</b> it. "Create a comparison table" beats "list the differences." "Build a flowchart" beats "describe the process."<br/><br/>You can iterate on Artifacts just like conversations — "add a column for cost" or "make the flowchart horizontal." Each version is saved, so you can always go back. But to get the most out of creation, you need a way to <b>organize</b> your work.',
           },
           {
             title: "Projects",
-            content: 'In Level 1, you created a Project to see how persistent instructions work. Now it\'s time to use them for real.<br/><br/>A <a href="https://support.anthropic.com/en/articles/9517075-what-are-projects" target="_blank" rel="noopener noreferrer" style="color: #5CC8FF; opacity: 0.8;">Project</a> is a workspace with its own instructions and reference files. Every conversation inside a Project inherits that context automatically — no copy-pasting, no re-explaining. Think of it like setting up a desk for a specific job: the right tools, references, and notes are already laid out.<br/><br/>The key insight: <b>different work deserves different Projects</b>. A "Weekly Reports" Project knows your format, audience, and tone. A "Research" Project knows your field and citation preferences. A "Learning" Project knows your level and what you\'ve covered.<br/><br/>Project instructions are your most powerful tool. They\'re not just preferences — they shape how Claude thinks about every response. A well-written instruction like "Always present trade-offs, not just recommendations" fundamentally changes the quality of what you get back.<br/><br/>With your work organized, the next question is: what can Claude actually <b>create</b> for you?',
+            content: 'A <a href="https://support.anthropic.com/en/articles/9517075-what-are-projects" target="_blank" rel="noopener noreferrer" style="color: #5CC8FF; opacity: 0.8;">Project</a> is a workspace with its own instructions and reference files. Every conversation inside a Project inherits that context automatically — no copy-pasting, no re-explaining. Think of it like setting up a desk for a specific job: the right tools, references, and notes are already laid out.<br/><br/>The key insight: <b>different work deserves different Projects</b>. A "Weekly Reports" Project knows your format, audience, and tone. A "Research" Project knows your field and citation preferences. A "Client Proposals" Project knows your pricing and style guide.<br/><br/>Project instructions are your most powerful tool for creation. They\'re not just preferences — they shape how Claude thinks about every response. A well-written instruction like "Always present trade-offs, not just recommendations" fundamentally changes the quality of what you get back.<br/><br/>With your work organized, let\'s make sure you have the best <b>tools</b> for the job.',
           },
           {
-            title: "Artifacts",
-            content: 'When Claude writes something substantial — a document, a table, a diagram, a piece of code — it can create an <a href="https://support.anthropic.com/en/articles/9487310-what-are-artifacts-and-how-do-i-use-them" target="_blank" rel="noopener noreferrer" style="color: #5CC8FF; opacity: 0.8;">Artifact</a>: a standalone piece of content that lives outside the conversation. Instead of text buried in a chat thread, you get something you can <b>view</b>, <b>edit</b>, and <b>export</b>.<br/><br/>Artifacts can be:<br/><b>Documents</b> — reports, essays, emails, proposals<br/><b>Tables</b> — structured data, comparisons, schedules<br/><b>Code</b> — scripts, HTML pages, working applications<br/><b>Diagrams</b> — flowcharts, org charts, process maps<br/><b>Visualizations</b> — charts and graphs from your data<br/><br/>The key shift: instead of asking Claude to <b>describe</b> something, ask it to <b>build</b> it. "Create a comparison table" beats "list the differences." "Build a flowchart" beats "describe the process."<br/><br/>You can iterate on Artifacts just like conversations — "add a column for cost" or "make the flowchart horizontal." Each version is saved, so you can always go back.',
+            title: "The Desktop App",
+            content: 'So far you\'ve been using Claude through a browser tab. The <a href="https://claude.ai/download" target="_blank" rel="noopener noreferrer" style="color: #5CC8FF; opacity: 0.8;">desktop app</a> puts Claude on your computer as a standalone application — always a keyboard shortcut away, no browser needed.<br/><br/>Why does that matter for creation? It changes Claude from a <b>website you visit</b> into a <b>tool you reach for</b>. Need to draft an email? ⌘-Space, type, done. Need to summarize a document? Drag it in. The friction drops from "open browser → find tab → start typing" to just <b>start typing</b>.<br/><br/>You can create Artifacts in the browser just fine, but the desktop app gives you a better experience — more screen space, easier file management, and keyboard shortcuts that speed up your creative workflow.',
+          },
+          {
+            title: "Subscriptions",
+            content: 'As you start creating more, you may hit the limits of the free tier. Claude offers different <a href="https://www.anthropic.com/pricing" target="_blank" rel="noopener noreferrer" style="color: #5CC8FF; opacity: 0.8;">subscription tiers</a>:<br/><br/><b>Free</b> — enough to explore and learn, but you\'ll hit daily caps during heavy use.<br/><b>Pro</b> — significantly higher limits, priority access, and full Opus access. Where most regular users land.<br/><b>Max</b> — everything in Pro with substantially higher usage limits. Built for heavy, all-day usage.<br/><b>Team</b> — everything in Pro, plus collaboration features, shared Projects, and admin controls.<br/><br/><b>Practical tip:</b> start with Free to build your habits. Upgrade to Pro when you find yourself hitting limits or wanting Opus for complex creative work. You\'ll know you need it when Claude becomes part of your daily workflow.',
           },
         ],
         items: [],
         guide: {
-          description: "You've learned to talk to Claude. Now let's set up your workspace — install the desktop app, organize your work with Projects, and start creating real output with Artifacts.",
+          description: "You've learned to talk to Claude. Now learn to make it build things — documents, tables, diagrams, and more. This level shifts from conversation to creation.",
           references: [],
           steps: [
-            "Download the Claude desktop app and sign in with your existing account",
-            "Create a Project — add custom instructions and upload reference files",
-            "Ask Claude to create an Artifact — a document, spreadsheet, or visualization",
-            "Learn the essential keyboard shortcuts: ⌘N (new chat), ⌘K (search), ⌘/ (shortcuts)",
-            "Organize your work — use Projects for different topics, star important conversations",
-            "Explore your subscription — understand Free vs Pro tier limits and what each unlocks",
+            "Ask Claude to create an Artifact — start with a document, table, or structured list",
+            "Iterate on an Artifact — ask Claude to add columns, change tone, restructure, or expand sections",
+            "Create a Project — add custom instructions that shape how Claude creates for you",
+            "Build something visual — a flowchart, comparison diagram, or data visualization",
+            "Upload a file and ask Claude to transform it — summarize a PDF, restructure notes, or extract data into a table",
+            "Download the Claude desktop app for a faster creative workflow (optional but recommended)",
           ],
           pitfalls: [
-            "Skipping Projects — without them, you repeat the same context every conversation",
-            "Ignoring Artifacts — copying text from the chat instead of asking Claude to create a structured document you can edit and export",
-            "One giant conversation — long chats degrade quality. Start fresh conversations for new topics and use Projects for continuity",
+            "Asking Claude to describe instead of build — say 'create a comparison table' not 'what are the differences'",
+            "Skipping Projects — without them, you repeat the same context and instructions every conversation",
+            "Not iterating — Artifacts are meant to be refined. The first version is a starting point, not the final product",
           ],
-          checkpoint: "You're ready for Level 3 when you have the desktop app running, use Projects to organize your work, and regularly use Artifacts to create structured output.",
+          checkpoint: "You're ready for Level 3 when you regularly use Artifacts to create structured output, use Projects to organize your work, and can iterate on creations until they're ready to use.",
         },
       },
       {
-        id: 3, title: "CoWork", subtitle: "",
+        id: 3, title: "Collaborate", subtitle: "",
         color: "#82AAFF", darkColor: "#1A2A5C", icon: "◎", duration: "~1 hour",
         overview: [
           {
-            title: "What Is CoWork?",
-            content: 'In Levels 1 and 2, you\'ve been having <b>conversations</b> with Claude — you ask, Claude responds, you refine. CoWork flips this dynamic. Instead of a back-and-forth chat, Claude works <b>alongside you</b> in real time.<br/><br/>Think of it as the difference between texting a colleague and sitting next to them. In CoWork mode, Claude can see what you\'re working on, take initiative, and work on tasks in the background while you focus on other things. You\'re not directing every step — you\'re <b>collaborating</b>.<br/><br/>This is your first taste of <b>agentic AI</b> in practice. Claude isn\'t just answering questions anymore — it\'s actively helping you get work done.',
+            title: "Beyond Conversation",
+            content: 'So far you\'ve been <b>conversing</b> with Claude and <b>creating</b> artifacts. But in both cases, you\'re driving every step. Now it\'s time to flip that dynamic.<br/><br/>Claude\'s desktop app includes a feature called <b><a href="https://claude.com/blog/cowork-research-preview" target="_blank" rel="noopener noreferrer" style="color: #82AAFF; opacity: 0.8;">CoWork</a></b> — a mode where Claude works <b>alongside you</b> in real time. Think of it as the difference between texting a colleague and sitting next to them. In CoWork, Claude can see what you\'re working on, take initiative, and work on tasks in the background while you focus on other things. You\'re not directing every step — you\'re <b>collaborating</b>.<br/><br/>This is your first taste of <b>agentic AI</b> in practice. Claude isn\'t just answering questions anymore — it\'s actively helping you get work done.',
           },
           {
             title: "Chat vs. CoWork",
@@ -187,18 +183,20 @@
           },
           {
             title: "Working With CoWork",
-            content: 'CoWork is most powerful when you give Claude a <b>clear goal</b> and let it work. Instead of micromanaging each step, describe the outcome you want:<br/><br/>"Research the top 5 project management tools and create a comparison table with pricing, key features, and pros/cons."<br/><br/>"Draft a 1,000-word blog post about remote work trends based on the articles I\'ve uploaded."<br/><br/>Claude will break the work into steps, execute them, and present results. You can check in, redirect, or refine along the way — but you don\'t have to hover.<br/><br/><b>Practical tip:</b> start with tasks you\'d normally spend 20-30 minutes on. This gives Claude enough room to work while keeping the stakes low as you learn the rhythm of collaborating.',
+            content: 'CoWork is most powerful when you give Claude a <b>clear goal</b> and let it work. Instead of micromanaging each step, describe the outcome you want. Compare these two:<br/><br/><span style="display: inline-block; padding: 6px 12px; background: #251820; border: 1px solid #3A2530; border-radius: 6px; margin: 4px 0; font-size: 13px;"><span style="color: #EF476F; opacity: 0.7; font-size: 10px; letter-spacing: 1px; text-transform: uppercase;">Vague</span><br/><span style="color: #888;">"Help me with my presentation"</span></span><br/><span style="display: inline-block; padding: 6px 12px; background: #152030; border: 1px solid #253545; border-radius: 6px; margin: 4px 0; font-size: 13px;"><span style="color: #82AAFF; opacity: 0.7; font-size: 10px; letter-spacing: 1px; text-transform: uppercase;">Better</span><br/><span style="color: #D0CDC8;">"Research the top 5 trends in remote work for 2026. Create a 10-slide outline with a title, 3 key stats per slide, and speaker notes. Target audience: HR directors."</span></span><br/><br/>The second works because Claude knows the <b>topic</b>, the <b>format</b>, and the <b>audience</b>. It can break the work into steps, execute them, and present results. You can check in, redirect, or refine along the way — but you don\'t have to hover.<br/><br/><b>Practical tip:</b> start with tasks you\'d normally spend 20-30 minutes on. This gives Claude enough room to work while keeping the stakes low as you learn the rhythm of collaborating.',
           },
         ],
         items: [],
         guide: {
-          description: "Step beyond conversations into real collaboration. CoWork lets Claude work alongside you — tackling tasks independently while you focus on what matters.",
-          references: [],
+          description: "Step beyond conversations into real collaboration. Let Claude work alongside you — tackling tasks independently while you focus on what matters.",
+          references: [
+            { title: "Get Started With CoWork", url: "https://support.claude.com/en/articles/13345190-get-started-with-cowork" },
+          ],
           steps: [
-            "Open CoWork mode from the desktop app and start your first collaborative session",
+            "Open CoWork from the desktop app and start your first session",
             "Give Claude a research task — a topic to investigate and summarize with sources",
             "Ask Claude to create a structured deliverable — a report, analysis, or plan",
-            "Practice checking in on progress and redirecting Claude mid-task",
+            "Upload a file and ask CoWork to transform it — summarize a document, reorganize notes, or extract key data",
             "Try running a CoWork session while you work on something else — experience the async workflow",
           ],
           pitfalls: [
