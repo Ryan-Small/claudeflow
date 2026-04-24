@@ -171,11 +171,11 @@
       },
       {
         id: 3, title: "Collaborate", subtitle: "",
-        color: "#82AAFF", darkColor: "#1A2A5C", icon: "◎", duration: "~1 hour",
+        color: "#7B93FF", darkColor: "#1A2050", icon: "◎", duration: "~1 hour",
         overview: [
           {
             title: "Beyond Conversation",
-            content: 'So far you\'ve been <b>conversing</b> with Claude and <b>creating</b> artifacts. But in both cases, you\'re driving every step. Now it\'s time to flip that dynamic.<br/><br/>Claude\'s desktop app includes a feature called <b><a href="https://claude.com/blog/cowork-research-preview" target="_blank" rel="noopener noreferrer" style="color: #82AAFF; opacity: 0.8;">CoWork</a></b> — a mode where Claude works <b>alongside you</b> in real time. Think of it as the difference between texting a colleague and sitting next to them. In CoWork, Claude can see what you\'re working on, take initiative, and work on tasks in the background while you focus on other things. You\'re not directing every step — you\'re <b>collaborating</b>.<br/><br/>This is your first taste of <b>agentic AI</b> in practice. Claude isn\'t just answering questions anymore — it\'s actively helping you get work done.',
+            content: 'So far you\'ve been <b>conversing</b> with Claude and <b>creating</b> artifacts. But in both cases, you\'re driving every step. Now it\'s time to flip that dynamic.<br/><br/>Claude\'s desktop app includes a feature called <b><a href="https://claude.com/blog/cowork-research-preview" target="_blank" rel="noopener noreferrer" style="color: #7B93FF; opacity: 0.8;">CoWork</a></b> — a mode where Claude works <b>alongside you</b> in real time. Think of it as the difference between texting a colleague and sitting next to them. In CoWork, Claude can see what you\'re working on, take initiative, and work on tasks in the background while you focus on other things. You\'re not directing every step — you\'re <b>collaborating</b>.<br/><br/>This is your first taste of <b>agentic AI</b> in practice. Claude isn\'t just answering questions anymore — it\'s actively helping you get work done.',
           },
           {
             title: "Chat vs. CoWork",
@@ -183,7 +183,7 @@
           },
           {
             title: "Working With CoWork",
-            content: 'CoWork is most powerful when you give Claude a <b>clear goal</b> and let it work. Instead of micromanaging each step, describe the outcome you want. Compare these two:<br/><br/><span style="display: inline-block; padding: 6px 12px; background: #251820; border: 1px solid #3A2530; border-radius: 6px; margin: 4px 0; font-size: 13px;"><span style="color: #EF476F; opacity: 0.7; font-size: 10px; letter-spacing: 1px; text-transform: uppercase;">Vague</span><br/><span style="color: #888;">"Help me with my presentation"</span></span><br/><span style="display: inline-block; padding: 6px 12px; background: #152030; border: 1px solid #253545; border-radius: 6px; margin: 4px 0; font-size: 13px;"><span style="color: #82AAFF; opacity: 0.7; font-size: 10px; letter-spacing: 1px; text-transform: uppercase;">Better</span><br/><span style="color: #D0CDC8;">"Research the top 5 trends in remote work for 2026. Create a 10-slide outline with a title, 3 key stats per slide, and speaker notes. Target audience: HR directors."</span></span><br/><br/>The second works because Claude knows the <b>topic</b>, the <b>format</b>, and the <b>audience</b>. It can break the work into steps, execute them, and present results. You can check in, redirect, or refine along the way — but you don\'t have to hover.<br/><br/><b>Practical tip:</b> start with tasks you\'d normally spend 20-30 minutes on. This gives Claude enough room to work while keeping the stakes low as you learn the rhythm of collaborating.',
+            content: 'CoWork is most powerful when you give Claude a <b>clear goal</b> and let it work. Instead of micromanaging each step, describe the outcome you want. Compare these two:<br/><br/><span style="display: inline-block; padding: 6px 12px; background: #251820; border: 1px solid #3A2530; border-radius: 6px; margin: 4px 0; font-size: 13px;"><span style="color: #EF476F; opacity: 0.7; font-size: 10px; letter-spacing: 1px; text-transform: uppercase;">Vague</span><br/><span style="color: #888;">"Help me with my presentation"</span></span><br/><span style="display: inline-block; padding: 6px 12px; background: #152030; border: 1px solid #253545; border-radius: 6px; margin: 4px 0; font-size: 13px;"><span style="color: #7B93FF; opacity: 0.7; font-size: 10px; letter-spacing: 1px; text-transform: uppercase;">Better</span><br/><span style="color: #D0CDC8;">"Research the top 5 trends in remote work for 2026. Create a 10-slide outline with a title, 3 key stats per slide, and speaker notes. Target audience: HR directors."</span></span><br/><br/>The second works because Claude knows the <b>topic</b>, the <b>format</b>, and the <b>audience</b>. It can break the work into steps, execute them, and present results. You can check in, redirect, or refine along the way — but you don\'t have to hover.<br/><br/><b>Practical tip:</b> start with tasks you\'d normally spend 20-30 minutes on. This gives Claude enough room to work while keeping the stakes low as you learn the rhythm of collaborating.',
           },
         ],
         items: [],
@@ -208,8 +208,46 @@
         },
       },
       {
-        id: 4, title: "Command", subtitle: "CLI Daily Workflows",
-        color: "#BB86FC", darkColor: "#3C1A6E", icon: "⬢", duration: "~1 week",
+        id: 4, title: "Extend", subtitle: "",
+        color: "#F472B6", darkColor: "#5C1A3A", icon: "⬡", duration: "~1 hour",
+        overview: [
+          {
+            title: "What Are Plugins?",
+            content: 'In Level 3, you learned to delegate tasks to CoWork. But out of the box, CoWork can only work with what\'s on your computer — your files and folders. <b><a href="https://claude.com/blog/cowork-plugins" target="_blank" rel="noopener noreferrer" style="color: #F472B6; opacity: 0.8;">Plugins</a></b> extend what CoWork can do.<br/><br/>A plugin can do two things. First, it can give Claude new <b>connections</b> — to services like Google Drive, Slack, Notion, or databases. Second, it can give Claude new <b>commands</b> — pre-written prompts and workflows that turn Claude into a specialist for a specific task. Think of plugins like hiring an expert: instead of a generalist who works with your files, you now have someone who can <b>pull data from your tools</b>, <b>post updates to your channels</b>, or <b>run a polished workflow</b> with a single command.<br/><br/>Plugins are built on a standard called <b>MCP</b> (Model Context Protocol), but you don\'t need to understand the internals. CoWork gives you a simple way to browse, install, and use them.',
+          },
+          {
+            title: "Finding & Installing Plugins",
+            content: 'CoWork includes a plugin directory where you can browse available integrations. Installation is straightforward — select a plugin, authorize it, and it\'s ready to use in your next session.<br/><br/>Some popular categories:<br/><b>Productivity</b> — Google Drive, Notion, Confluence<br/><b>Communication</b> — Slack, email<br/><b>Data</b> — spreadsheets, databases, APIs<br/><b>Development</b> — GitHub, Jira, Linear<br/><br/>Each plugin comes with a description of what it can do and what access it needs. <b>Start with one plugin</b> that connects to a tool you use daily — you\'ll immediately feel the difference when CoWork can pull from your real data instead of just local files.',
+          },
+          {
+            title: "Putting It Together",
+            content: 'Plugins transform CoWork from a smart assistant into a <b>connected</b> assistant. Consider the difference:<br/><br/><span style="display: inline-block; padding: 6px 12px; background: #251820; border: 1px solid #3A2530; border-radius: 6px; margin: 4px 0; font-size: 13px;"><span style="color: #EF476F; opacity: 0.7; font-size: 10px; letter-spacing: 1px; text-transform: uppercase;">Without plugins</span><br/><span style="color: #888;">"Here\'s a file with our team\'s project updates. Summarize the status of each initiative."</span></span><br/><span style="display: inline-block; padding: 6px 12px; background: #1A1530; border: 1px solid #2D2545; border-radius: 6px; margin: 4px 0; font-size: 13px;"><span style="color: #F472B6; opacity: 0.7; font-size: 10px; letter-spacing: 1px; text-transform: uppercase;">With plugins</span><br/><span style="color: #D0CDC8;">"Pull this week\'s project updates from my Gmail, summarize the status of each initiative, and post the roundup to the #team-updates Slack channel."</span></span><br/><br/>Same Claude, same CoWork — but now it can <b>reach your tools directly</b>. The manual steps of downloading, uploading, and copy-pasting disappear.<br/><br/>This is also your first introduction to the concept of <b>MCP</b> — the protocol that powers plugins. If you continue to Level 5 and beyond, you\'ll learn to configure MCP servers directly for even more control.',
+          },
+        ],
+        items: [],
+        guide: {
+          description: "Give Claude superpowers. Plugins connect CoWork to the tools you already use — pulling data, posting updates, and automating the manual steps between your apps.",
+          references: [
+            { title: "Use Plugins in CoWork", url: "https://support.claude.com/en/articles/13837440-use-plugins-in-cowork" },
+          ],
+          steps: [
+            "Browse the plugin directory in CoWork and explore what's available",
+            "Install your first plugin — pick a tool you use daily (Google Drive, Slack, Notion, etc.)",
+            "Run a CoWork session that uses the plugin — ask Claude to pull real data from the connected service",
+            "Try combining plugins — connect two services and ask Claude to move information between them",
+            "Review what access each plugin has and understand the permission model",
+          ],
+          pitfalls: [
+            "Installing too many plugins at once — start with one, learn the workflow, then add more",
+            "Forgetting what access you've granted — review plugin permissions periodically, especially for sensitive data",
+            "Expecting plugins to replace dedicated tools — plugins give Claude access, but your specialized tools are still better for complex operations within those platforms",
+          ],
+          checkpoint: "You're ready for Level 5 when you've connected at least one plugin to CoWork and used it to complete a task that would have required manual copy-pasting before.",
+        },
+      },
+      {
+        id: 5, title: "Command", subtitle: "CLI Daily Workflows",
+        color: "#D27BFA", darkColor: "#4A1A6E", icon: "⬢", duration: "~1 week",
         items: [
           "Slash commands: /compact, /clear, /model, /cost",
           "Keyboard shortcuts: Shift+Tab, Esc Esc, #, @, !",
@@ -237,7 +275,7 @@
         },
       },
       {
-        id: 5, title: "Integrate", subtitle: "MCP & Configuration",
+        id: 6, title: "Integrate", subtitle: "MCP & Configuration",
         color: "#EF476F", darkColor: "#5C1A2A", icon: "◇", duration: "~2 weeks",
         items: [
           "MCP: connect GitHub, Sentry, Notion, databases",
@@ -267,7 +305,7 @@
         },
       },
       {
-        id: 6, title: "Automate", subtitle: "Advanced Agentic Patterns",
+        id: 7, title: "Automate", subtitle: "Advanced Agentic Patterns",
         color: "#FFD166", darkColor: "#5C4813", icon: "◆", duration: "~1 month",
         items: [
           "Explore → Plan → Code → Commit workflow",
@@ -295,7 +333,7 @@
         },
       },
       {
-        id: 7, title: "Master", subtitle: "CI/CD & SDK",
+        id: 8, title: "Master", subtitle: "CI/CD & SDK",
         color: "#FF8C42", darkColor: "#5C2E0E", icon: "✦", duration: "Ongoing",
         items: [
           "GitHub Actions with claude-code-action@v1",
